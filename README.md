@@ -3,5 +3,5 @@ Repo of Ontology Japan Hackathon entries
 
 ## Welcome to join this hachathon
 
-Please fork this repo and push your projects, docs and presentation to you forked repo.
+Please fork this repo and push your projects, docs and presentation to your forked repo.
 Thanks! 😊
