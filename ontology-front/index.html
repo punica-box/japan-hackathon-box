@@ -43,11 +43,13 @@
     }
 
     //SDK test
-    async function sdk() {
+    async function createIdentity() {
         console.log(Ont.Crypto)
         var wallet = await Ont.Wallet.create('test');
         //Private key 生成
         const privateKey = Ont.Crypto.PrivateKey.random();
+
+        console.log(privateKey)
 
         //Identity作成
         const password = "issuer"
@@ -62,6 +64,7 @@
         const gasLimit = '20000';
         const tx = Ont.OntidContract.buildRegisterOntidTx(did, pk, gasPrice, gasLimit);
         tx.payer = new Ont.Crypto.Address("AemAjf8JSPkTdnXMmqeu6LRw5Ja3rvZV7y");
+
         Ont.TransactionBuilder.signTransaction(tx, privateKey);
 
         const pri = Ont.Crypto.PrivateKey.deserializeWIF('L5NBY1AaWje2duAXLfb1gK8Srrsu45bpKFCB84jdNnaynPHRmFKH');
@@ -71,28 +74,67 @@
 
         //Then sign the transaction with payer's account
         //we already got transaction created before,add the signature.
-         Ont.TransactionBuilder.addSign(tx, pri)
+        Ont.TransactionBuilder.addSign(tx, pri)
 
         const rest = new Ont.RestClient();
-        
-        console.log(tx)
 
+        console.log(tx)
 
         rest.sendRawTransaction(tx.serialize(), false).then(res => {
             console.log(res);
         })
+    }
+
+    async function issueClaim() {
+
+        const signature = null;
+        const useProof = false;
+
+        const claim = new Ont.Claim({
+            messageId: Ont.Crypto.PrivateKey.random().key,
+            issuer: 'did:ont:AUvSmqnWDG5mseaecdcMfk3w98rwrKamzK',
+            subject: 'did:ont:AFzmBSzuAsx9fVvKU9TmQdYWmwDTMjHyL4',
+            issueAt: 1525800823
+        }, signature, useProof);
+
+        claim.version = '0.7.0';
+        //This can be ignored for now
+
+        claim.context = 'https://example.com/template/v1';
+        claim.content = {
+            Name: 'Alice2',
+            Age: '22'
+        };
+
+        const url2 = 'http://polaris1.ont.io:20334';
+
+        const publicKeyId = "did:ont:AUvSmqnWDG5mseaecdcMfk3w98rwrKamzK" + "#keys-1"
+        const issuerPriv = new Ont.Crypto.PrivateKey('2d56133d1047d7700fb908a93253a58da479774a6321f0d11040c9096dc24f33');
+
+        await claim.sign(url2, publicKeyId, issuerPriv)
+        console.log(claim)
+        singed = claim.serialize();
+
+        const url = 'ws://polaris1.ont.io:20335';
+
+        const gasPrice = '500';
+        const gasLimit = '20000';
+        const payer = new Ont.Crypto.Address('AemAjf8JSPkTdnXMmqeu6LRw5Ja3rvZV7y');
+        const privateKey = Ont.Crypto.PrivateKey.deserializeWIF('L5NBY1AaWje2duAXLfb1gK8Srrsu45bpKFCB84jdNnaynPHRmFKH')
+        const result = await claim.attest(url, gasPrice, gasLimit, payer, privateKey);
+        console.log(result)
+
+        const result2 = await claim.getStatus(url2);
+        //console.log(result2)
+
+        const msg = Ont.Claim.deserialize(singed);
+        var verified =  await msg.verify(url2, false)
+   
+        console.log(verified)
 
     }
 
-
-
-
-
-
-
-
     dapi();
-    //sdk();
 
 
 
@@ -123,8 +165,9 @@
     <br>
     <input type='button' onclick="transfer()" value="Transfer">
 
-    <input type='button' onclick="sdk()" value="SDK">
+    <input type='button' onclick="createIdentity()" value="createIdentity">
 
+    <input type='button' onclick="issueClaim()" value="IssueClaim">
 
 </body>
 
