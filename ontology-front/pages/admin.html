@@ -1,0 +1,55 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="admin-title">
+      <h1>Admin画面</h1>
+    </div>
+    <div class="admin-content">
+      <div class="admin-item clearfix">
+        <label class="admin-label" for="admin-hackathon-name">イベント名</label>
+        <select name=”hackathon-name” id="admin-hackathon-name">
+          <option value=”hackathon”>Ontology Hackathon</option>
+        </select>
+      </div>
+      <div class="admin-item clearfix">
+        <label class="admin-label" for="admin-team-name">チーム名</label>
+        <select name=”team-name” id="admin-team-name">
+          <option value=”team”>Cerveridied</option>
+          <option value=”team”>Ontology</option>
+          <option value=”team”>Microsoft</option>
+        </select>
+      </div>
+      <div class="admin-item clearfix">
+        <label class="admin-label" for="admin-user-name">参加者名</label>
+        <select name=”user-name” id="admin-user-name">
+          <option value=”user”>ookimaki</option>
+          <option value=”user”>mosa</option>
+          <option value=”user”>giwa</option>
+          <option value=”user”>marianne</option>
+        </select>
+      </div>
+      <div class="admin-item clearfix">
+        <label for="hackathon-name" class="admin-label">ハッカソン名</label>
+        <input id="hackathon-name" type="text">
+      </div>
+      <div class="admin-item clearfix">
+        <label for="prize" class="admin-label">賞</label>
+        <input id="prize" type="text">
+      </div>
+      <div class="admin-item clearfix">
+        <label for="comment" class="admin-label">コメント</label>
+        <textarea id="comment" rows="10"></textarea>
+      </div>
+      <div class="admin-buttons clearfix">
+        <input type="submit" value="送信する" class="button">
+        <input type="reset" value="リセットする" class="button">
+      </div>
+    </div>
+  </div>
+</body>
+</html>
