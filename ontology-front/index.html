@@ -61,10 +61,13 @@
         const gasPrice = '500';
         const gasLimit = '20000';
         const tx = Ont.OntidContract.buildRegisterOntidTx(did, pk, gasPrice, gasLimit);
-         Ont.TransactionBuilder.signTransaction(tx, privateKey);
-
         tx.payer = new Ont.Crypto.Address("AemAjf8JSPkTdnXMmqeu6LRw5Ja3rvZV7y");
+        Ont.TransactionBuilder.signTransaction(tx, privateKey);
+
         const pri = Ont.Crypto.PrivateKey.deserializeWIF('L5NBY1AaWje2duAXLfb1gK8Srrsu45bpKFCB84jdNnaynPHRmFKH');
+
+        const account = Ont.Account.create(pri, '123456', '');
+        console.log('address: ' + account.address.toBase58());
 
         //Then sign the transaction with payer's account
         //we already got transaction created before,add the signature.
@@ -74,7 +77,8 @@
         
         console.log(tx)
 
-        rest.sendRawTransaction(tx, false).then(res => {
+
+        rest.sendRawTransaction(tx.serialize(), false).then(res => {
             console.log(res);
         })
 
