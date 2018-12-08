@@ -1,0 +1,107 @@
+:root {
+  --title-font-size: 36px;
+  --middle-font-size: 16px;
+  --small-font-size: 12px;
+  --container-width: 80%;
+  --font-main: arial, sans-serif;
+  --light-font-color: #AAAAAA;
+  --gray-font-color: #888888;
+  --dark-background-color: black;
+  --white-color: white;
+}
+
+div, p {
+  font-family: "ヒラギノ明朝 ProN W6", "HiraMinProN-W6", "HG明朝E", "ＭＳ Ｐ明朝", "MS PMincho", "MS 明朝";
+}
+
+img {
+  width: 100%;
+}
+
+header {
+  height: 50px;
+  width: var(--container-width);
+  margin: auto;
+}
+
+header .tab {
+  float: right;
+  margin: auto;
+  padding: 1%;
+}
+
+body {
+  margin: 0px;
+}
+
+.clearfix:after {
+  clear: both;
+  content: '';
+  display: block;
+}
+
+.container {
+  width: var(--container-width);
+  margin: auto;
+}
+
+.title {
+  font-size: var(--title-font-size);
+  text-align: center;
+  line-height: 40px;
+}
+
+.gray-background {
+  background: var(--background-color);
+}
+
+.prize {
+  text-align: center;
+}
+
+.prize-badge {
+  position: relative;
+  width: 80%;
+  margin: auto;
+}
+
+.inside-img {
+  position: absolute;
+  text-align: center;
+}
+
+.user-name {
+  font-size: 2em;
+  top: 40%;
+  width: 100%;
+  margin: auto;
+}
+
+.description-of-hackathon {
+  color: var(--gray-font-color);
+  font-size: 24px;
+  top: 45%;
+  width: 100%;
+  text-align: center;
+}
+
+.description-of-skill {
+  color: var(--light-font-color);
+  font-size: 24px;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+}
+
+.date {
+  top: 75%;
+  left: 25%;
+}
+
+.signature {
+  font-family: cursive;
+  font-size: 24px;
+  font-style: oblique;
+  top: 74%;
+  right: 15%;
+}
