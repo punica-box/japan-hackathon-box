@@ -85,13 +85,13 @@
         })
     }
 
-    async function issueClaim() {
-
+    function buildClaim() {
         const signature = null;
         const useProof = false;
 
         const claim = new Ont.Claim({
-            messageId: Ont.Crypto.PrivateKey.random().key,
+            // messageId: Ont.Crypto.PrivateKey.random().key,
+            messageId: "cerverified",
             issuer: 'did:ont:AUvSmqnWDG5mseaecdcMfk3w98rwrKamzK',
             subject: 'did:ont:AFzmBSzuAsx9fVvKU9TmQdYWmwDTMjHyL4',
             issueAt: 1525800823
@@ -102,9 +102,37 @@
 
         claim.context = 'https://example.com/template/v1';
         claim.content = {
-            Name: 'Alice2',
-            Age: '22'
+            event: {
+              name: "Ontology Blockchain Hackathon Tokyo #1",
+              url: "https://ontology.connpass.com/event/106684/",
+              image_url: "https://connpass-tokyo.s3.amazonaws.com/thumbs/2a/22/2a22848978459a1258d39959dea85ef8.png"
+            },
+            entry: {
+              name: "mosa",
+              image_url: "https://pbs.twimg.com/profile_images/378800000214753541/b3fdd930163a330b670a45b483606574_400x400.jpeg"
+            },
+            team: {
+              name: "team_satoshi",
+              members: [], // did array
+            },
+            submitted: {
+              url: "https://github.com/mosasiru/japan-hackathon-box",
+              title: "Cerverified",
+              description: "attest you attend the event",
+              image_url: ""
+            },
+            awrd: {
+              title: "Best award",
+              description: "best!!!",
+              image_url: "",
+            }
         };
+        return claim;
+
+    }
+
+    async function issueClaim() {
+        const claim = buildClaim();
 
         const url2 = 'http://polaris1.ont.io:20334';
 
@@ -118,7 +146,7 @@
         const url = 'ws://polaris1.ont.io:20335';
 
         const gasPrice = '500';
-        const gasLimit = '20000';
+        const gasLimit = '200000';
         const payer = new Ont.Crypto.Address('AemAjf8JSPkTdnXMmqeu6LRw5Ja3rvZV7y');
         const privateKey = Ont.Crypto.PrivateKey.deserializeWIF('L5NBY1AaWje2duAXLfb1gK8Srrsu45bpKFCB84jdNnaynPHRmFKH')
         const result = await claim.attest(url, gasPrice, gasLimit, payer, privateKey);
@@ -132,6 +160,32 @@
    
         console.log(verified)
 
+
+        // addAttribute
+        // [TODO] sign via dAPI. now fixed sunject,
+        const walletPrivateKey = new Ont.Crypto.PrivateKey("b575449ca2902a11e2f4f1ba819d26015844eff774775d67b93c507e92d0b8f1");
+        const walletIdentityPrivateKey = new Ont.Crypto.PrivateKey("61d553c5a07a26f1ebb8ff4035fb28757673b2e40a77c933af6816e1f5f5d0a5");
+
+
+        const attr = new Ont.DDOAttribute();
+        attr.key = claim.metadata.messageId;
+        attr.type = 'JSON';
+        attr.value = JSON.stringify({
+            Type : 'JSON',
+            Value: claim
+        });
+
+        const identity = await client.api.identity.getIdentity();
+        const account = await client.api.asset.getAccount();
+        const address = new Ont.Crypto.Address(account);
+
+        const tx = Ont.OntidContract.buildAddAttributeTx(identity, [attr], walletIdentityPrivateKey.getPublicKey(), gasPrice, gasLimit);
+        tx.payer = address;
+        Ont.TransactionBuilder.signTransaction(tx, walletPrivateKey);
+        Ont.TransactionBuilder.addSign(tx, walletIdentityPrivateKey);
+        const socketClient = new Ont.WebsocketClient(url);
+        const res = await socketClient.sendRawTransaction(tx.serialize(), false, true);
+        console.log(res);
     }
 
     dapi();
