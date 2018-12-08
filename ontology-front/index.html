@@ -1,0 +1,127 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+
+<script src="./dapi.js"></script>
+<script src="./sdk.js"></script>
+<script>
+
+    var client
+
+    //DAPI Test
+    async function dapi() {
+
+        client = dApi.client;
+        client.registerClient({});
+
+        //Get Address
+        const account = await client.api.asset.getAccount();
+        document.getElementById("account").innerHTML = account;
+
+        //Get balance
+        const balance = await client.api.network.getBalance({ address: account });
+        document.getElementById("ong").innerHTML = balance.ONG;
+        document.getElementById("ont").innerHTML = balance.ONT;
+        document.getElementById("gwt").innerHTML = balance.GWT;
+        document.getElementById("mrt").innerHTML = balance.MRT;
+
+        //const identity = await 
+        const identity = await client.api.identity.getIdentity();
+        document.getElementById("identity").innerHTML = identity;
+
+    }
+
+    async function transfer() {
+        const to = 'AXCyYV4DNmmsqZn9qJEqHqpacVxcr7X7ns';
+        const asset = 'GWT';
+        const amount = 10;
+        const result = await client.api.asset.send({ to, asset, amount });
+        console.log(result)
+    }
+
+    //SDK test
+    async function sdk() {
+        console.log(Ont.Crypto)
+        var wallet = await Ont.Wallet.create('test');
+        //Private key 生成
+        const privateKey = Ont.Crypto.PrivateKey.random();
+
+        //Identity作成
+        const password = "issuer"
+        const label = "issuer"
+        var identity = Ont.Identity.create(privateKey, password, label)
+
+        console.log(identity)
+
+        const did = identity.ontid;
+        const pk = privateKey.getPublicKey();
+        const gasPrice = '500';
+        const gasLimit = '20000';
+        const tx = Ont.OntidContract.buildRegisterOntidTx(did, pk, gasPrice, gasLimit);
+         Ont.TransactionBuilder.signTransaction(tx, privateKey);
+
+        tx.payer = new Ont.Crypto.Address("AemAjf8JSPkTdnXMmqeu6LRw5Ja3rvZV7y");
+        const pri = Ont.Crypto.PrivateKey.deserializeWIF('L5NBY1AaWje2duAXLfb1gK8Srrsu45bpKFCB84jdNnaynPHRmFKH');
+
+        //Then sign the transaction with payer's account
+        //we already got transaction created before,add the signature.
+         Ont.TransactionBuilder.addSign(tx, pri)
+
+        const rest = new Ont.RestClient();
+        
+        console.log(tx)
+
+        rest.sendRawTransaction(tx, false).then(res => {
+            console.log(res);
+        })
+
+    }
+
+
+
+
+
+
+
+
+    dapi();
+    //sdk();
+
+
+
+</script>
+
+
+<body>
+
+    Account:
+    <p id="account"></p>
+
+    ONG:
+    <p id="ong"></p>
+
+    ONT:
+    <p id="ont"></p>
+
+    Giwa Token:
+    <p id="gwt"></p>
+
+    Marianne:
+    <p id="mrt"></p>
+
+    Identity:
+    <p id="identity"></p>
+
+    Transfer 10 Giwa token to Giwa: AaNtG3kMH9iWG2sWWL3jQZUPjN9Q23VssQ:
+    <br>
+    <input type='button' onclick="transfer()" value="Transfer">
+
+    <input type='button' onclick="sdk()" value="SDK">
+
+
+</body>
+
+</html>
