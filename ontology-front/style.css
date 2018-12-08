@@ -8,6 +8,7 @@
   --gray-font-color: #888888;
   --dark-background-color: black;
   --white-color: white;
+  --button-color-normal: #0099CC;
 }
 
 div, p {
@@ -104,4 +105,47 @@ body {
   font-style: oblique;
   top: 74%;
   right: 15%;
+}
+
+
+/* for admin page */
+h1 {
+  text-align: center;
+}
+
+label {
+  font-weight: bold;
+  float: left;
+}
+
+input, textarea {
+  width: 80%;
+  float: left;
+  line-height: 20px;
+  border: solid 1px var(--light-font-color);
+}
+
+.admin-title {
+  margin: 20px 0px;
+}
+
+.admin-item {
+  margin: 10px 0px;
+}
+
+.admin-buttons {
+  margin: 20px;
+}
+
+.admin-label {
+  width: 20%;
+}
+
+.button {
+  width: 150px;
+  background-color: var(--button-color-normal);
+  margin: 10px;
+  float: left;
+  color: white;
+  line-height: 30px;
 }
