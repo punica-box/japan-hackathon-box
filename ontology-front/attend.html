@@ -42,7 +42,14 @@
 
         claim.context = 'https://example.com/template/v1';
         claim.content = {
-            TeamName: inputData.teamName.value
+            Name: inputData.name.value,
+            ImageUrl: inputData.imageUrl.value,
+            TeamName: inputData.teamName.value,
+            Program: {
+                Name:'Ontologyハッカソン in 東京 #1',
+                Url: 'https://ontology.connpass.com/event/106684/',
+            },
+            Repository: inputData.repoUrl.value,
         };
 
         const url2 = 'http://polaris1.ont.io:20334';
@@ -69,7 +76,7 @@
         const msg = Ont.Claim.deserialize(singed);
         var verified =  await msg.verify(url2, false)
    
-        console.log(verified)
+        console.log(verified);
 
     }
 
@@ -84,10 +91,27 @@
 
     <div id="account">Account: Null</div>
     <div id="identity">Identity: Null</div>
+    <br>
 
     <form name="inputData">
         <div>Your name: <input type='text' name='name' value='' /></div>
-        <div>Team name: <input type='text' name='teamName' value='' /></div>
+        <div>Your image url: <input type='text' name='imageUrl' value='' /></div>
+        <div>Select your team name: <select id="teamName" name="teamName">
+            <option value="リボ払い">リボ払い</option>
+            <option value="volvox">volvox</option>
+            <option value="報われるべきこの世界">報われるべきこの世界</option>
+            <option value="DappCity">DappCity</option>
+            <option value="Blockchain-Nagoya">Blockchain-Nagoya</option>
+            <option value="チーム廃課金">チーム廃課金</option>
+            <option value="オリンピックチーム">オリンピックチーム</option>
+            <option value="ギャンブル">ギャンブル</option>
+            <option value="Cerverified">Cerverified</option>
+            <option value="美食倶楽部">美食倶楽部</option>
+            <option value="mesi">mesi</option>
+            <option value="高輪ゲートウェイ(仮)">高輪ゲートウェイ(仮)</option>
+            <option value="放課後揺れるネコ">放課後揺れるネコ</option>
+        </select></div>
+        <div>Your repository url: <input type='text' name='repoUrl' value='' /></div>
         <div><input type='button' onclick="issueClaim()" value="IssueClaim" /></div>
     </form>
 
