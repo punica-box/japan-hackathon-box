@@ -69,22 +69,16 @@ app.post('/verify', async function (req, res) {
 
       var verified = await claim.verify(url2, false)
 
-      template = `
-        verified: <%= verified; %>
-        claim: <%= claim %>
-      `
+      res.json({
+        verified: verified,
+        claim: claim,
+      })
 
-      html = ejs.render(
-        template,
-        {
-          claim: JSON.stringify(claim, null, 2),
-          verified: verified,
-        }
-      );
-      res.send(html)
   } catch (error) {
       console.error(error);
-      res.send("error: " + error.message)
+    res.status(500).json({
+      error: error.message
+    })
   }
 })
  
