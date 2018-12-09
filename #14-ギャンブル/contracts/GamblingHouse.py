@@ -78,7 +78,7 @@ def valuesToFormatStr(values):
     for i in range(0, len(values)):
         value = values[i]
         if (i % 2 == 0):
-            if(i % 2 == 0):
+            if(i != 0):
                 ret = concat(ret, ":")
             ret = concat(ret, value)
         else:
