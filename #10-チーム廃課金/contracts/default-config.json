@@ -1,0 +1,292 @@
+{
+    "defaultWallet": "wallet.json",
+    "password": {
+        "AUr5QUfeBADq6BMY6Tp5yuMsUNGpsD7nLZ": "password",
+        "AecaeSEBkt5GcBCxwz1F41TvdjX3dnKBkJ": "password",
+        "AQvZMDecMoCi2y4V6QKdJBtHW1eV7Vbaof": "password"
+    },
+    "deployConfig": {
+        "name": "contract name ",
+        "version": "contract version",
+        "author": "the author of contract",
+        "email": "email address",
+        "desc": "a description for your contract",
+        "needStorage": true,
+        "payer": "AUr5QUfeBADq6BMY6Tp5yuMsUNGpsD7nLZ",
+        "gasPrice": 0,
+        "gasLimit": 31000000
+    },
+    "invokeConfig": {
+        "abi": "gacha_abi.json",
+        "defaultPayer": "AUr5QUfeBADq6BMY6Tp5yuMsUNGpsD7nLZ",
+        "gasPrice": 0,
+        "gasLimit": 20000,
+        "sleepTime": 6,
+        "functions": [
+            {
+                "operation": "name",
+                "args": [],
+                "signature": {},
+                "preExec": true
+            },
+            {
+                "operation": "hello",
+                "args": [
+                    {
+                        "name": "msg",
+                        "value": "String:sss"
+                    }
+                ],
+                "signature": {},
+                "preExec": true
+            },
+            {
+                "operation": "testHello",
+                "args": [
+                    {
+                        "name": "msgBool",
+                        "value": true
+                    },
+                    {
+                        "name": "msgInt",
+                        "value": 100
+                    },
+                    {
+                        "name": "msgByteArray",
+                        "value": "ByteArray:74657374"
+                    },
+                    {
+                        "name": "msgStr",
+                        "value": "String:test"
+                    },
+                    {
+                        "name": "msgAddress",
+                        "value": "Address:AUr5QUfeBADq6BMY6Tp5yuMsUNGpsD7nLZ"
+                    }
+                ],
+                "signature": {
+                    "m": 1,
+                    "signers": [
+                        "AUr5QUfeBADq6BMY6Tp5yuMsUNGpsD7nLZ"
+                    ]
+                },
+                "preExec": true
+            },
+            {
+                "operation": "testList",
+                "args": [
+                    {
+                        "name": "msgList",
+                        "value": [
+                            true,
+                            100,
+                            "ByteArray:aabb",
+                            "String:hello",
+                            [
+                                true,
+                                100,
+                                "ByteArray:aabb",
+                                "String:hello"
+                            ]
+                        ]
+                    }
+                ],
+                "signature": {
+                    "m": 2,
+                    "signers": [
+                        "AUr5QUfeBADq6BMY6Tp5yuMsUNGpsD7nLZ",
+                        "AecaeSEBkt5GcBCxwz1F41TvdjX3dnKBkJ"
+                    ],
+                    "publicKeys": [
+                        "03f631f975560afc7bf47902064838826ec67794ddcdbcc6f0a9c7b91fc8502583",
+                        "03624058e31c2830320751a62598f726f70496c534906814d9a77363a2bffa95fe",
+                        "037db763291c98e08108d7df9a66aacc27d1023112c86e7b19e0747f7aa89fc2f7"
+                    ]
+                },
+                "preExec": true
+            },
+            {
+                "operation": "testListAndStr",
+                "args": [
+                    {
+                        "name": "msgList",
+                        "value": [
+                            true,
+                            100,
+                            "ByteArray:aabb",
+                            "String:hello",
+                            [
+                                true,
+                                100,
+                                "ByteArray:aabb",
+                                "String:hello"
+                            ]
+                        ]
+                    },
+                    {
+                        "name": "msgStr",
+                        "value": "String:test"
+                    }
+                ],
+                "signature": {},
+                "preExec": true
+            },
+            {
+                "operation": "testStructList",
+                "args": [
+                    {
+                        "name": "structList",
+                        "value": [
+                            [
+                                "String:hello",
+                                1
+                            ],
+                            [
+                                "String:hello2",
+                                2
+                            ]
+                        ]
+                    }
+                ],
+                "signature": {},
+                "preExec": true
+            },
+            {
+                "operation": "testStructListAndStr",
+                "args": [
+                    {
+                        "name": "structList",
+                        "value": [
+                            [
+                                "String:hello",
+                                1
+                            ],
+                            [
+                                "String:hello2",
+                                2
+                            ]
+                        ]
+                    },
+                    {
+                        "name": "msgStr",
+                        "value": "String:test"
+                    }
+                ],
+                "signature": {},
+                "preExec": true
+            },
+            {
+                "operation": "testMap",
+                "args": [
+                    {
+                        "name": "msg",
+                        "value": {
+                            "key1": "String:hello2",
+                            "key2": "ByteArray:aabb",
+                            "key3": 100,
+                            "key4": true,
+                            "key": [
+                                "String:hello",
+                                100
+                            ]
+                        }
+                    }
+                ],
+                "signature": {
+                    "m": 1,
+                    "signers": [
+                        "AUr5QUfeBADq6BMY6Tp5yuMsUNGpsD7nLZ"
+                    ]
+                },
+                "preExec": false
+            },
+            {
+                "operation": "testGetMap",
+                "args": [
+                    {
+                        "name": "key",
+                        "value": "String:key"
+                    }
+                ],
+                "signature": {},
+                "preExec": true
+            },
+            {
+                "operation": "testMapInMap",
+                "args": [
+                    {
+                        "name": "msg",
+                        "value": {
+                            "key1": "String:hello2",
+                            "key2": "ByteArray:aabb",
+                            "key3": 100,
+                            "key4": true,
+                            "key5": [
+                                "String:hello",
+                                100
+                            ],
+                            "key": {
+                                "key": "String:hello2",
+                                "key1": true,
+                                "key3": 100
+                            }
+                        }
+                    }
+                ],
+                "signature": {},
+                "preExec": true
+            },
+            {
+                "operation": "testGetMapInMap",
+                "args": [
+                    {
+                        "name": "key",
+                        "value": "String:key"
+                    }
+                ],
+                "signature": {},
+                "preExec": true
+            },
+            {
+                "operation": "transferMulti",
+                "args": [
+                    {
+                        "name": "args",
+                        "value": [
+                            [
+                                "Address:AUr5QUfeBADq6BMY6Tp5yuMsUNGpsD7nLZ",
+                                "Address:ARLvwmvJ38stT9MKD78YtpDak3MENZkoxF",
+                                1
+                            ],
+                            [
+                                "Address:AUr5QUfeBADq6BMY6Tp5yuMsUNGpsD7nLZ",
+                                "Address:AazEvfQPcQ2GEFFPLF1ZLwQ7K5jDn81hve",
+                                1
+                            ]
+                        ]
+                    }
+                ],
+                "signature": {
+                    "m": 1,
+                    "signers": [
+                        "AUr5QUfeBADq6BMY6Tp5yuMsUNGpsD7nLZ"
+                    ]
+                },
+                "payer": "AUr5QUfeBADq6BMY6Tp5yuMsUNGpsD7nLZ",
+                "preExec": true
+            },
+            {
+                "operation": "roll_gacha",
+                "args": [],
+                "signature": {},
+                "preExec": true
+            },
+            {
+                "operation": "storage",
+                "args": [],
+                "signature": {},
+                "preExec": true
+            }
+        ]
+    }
+}
