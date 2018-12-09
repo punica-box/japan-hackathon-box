@@ -26,8 +26,14 @@
                 if (typeof targetAttr === 'undefined') {
                     throw new Error('No cerverified attribute in DDO: ' + JSON.stringify(ddo.Attributes));
                 }
+
                 const cerverified = JSON.parse(targetAttr.SelfDefined.cerverified);
-                content = cerverified.Value.content;
+
+                console.log(json)
+                console.log(cerverified)
+                const val =  Ont.Claim.deserialize(cerverified.Value);
+                console.log(val)
+                content = val.content
                 // console.log(content);
                 document.getElementById('Name').innerHTML = unescape(content.Name);
                 document.getElementById('TeamName').innerHTML = 'Team ' + unescape(content.TeamName);

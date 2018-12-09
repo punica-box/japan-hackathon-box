@@ -1,4 +1,4 @@
 ```
 npm install
-npm app.js
+node app.js
 ```

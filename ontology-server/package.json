@@ -11,6 +11,8 @@
   "dependencies": {
     "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "lodash": "^4.17.11",
+    "node-fetch": "^2.3.0",
     "nodemon": "^1.18.7",
     "ontology-ts-sdk": "^1.0.9"
   }

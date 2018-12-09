@@ -127,7 +127,7 @@
 
         await claim.sign(url2, publicKeyId, issuerPriv)
         console.log(claim)
-        singed = claim.serialize();
+        signed = claim.serialize();
 
         const url = 'ws://polaris1.ont.io:20335';
 
@@ -141,7 +141,8 @@
         const result2 = await claim.getStatus(url2);
         //console.log(result2)
 
-        const msg = Ont.Claim.deserialize(singed);
+        const msg = Ont.Claim.deserialize(signed);
+        console.log(signed)
         var verified =  await msg.verify(url2, false)
    
         console.log(verified)
@@ -157,8 +158,10 @@
         attr.key = claim.metadata.messageId;
         attr.type = 'JSON';
         attr.value = JSON.stringify({
-            Type : 'JSON',
-            Value: claim
+//            Type : 'JSON',
+//            Value: claim
+            Type : 'STRING',
+            Value: signed
         });
 
         const identity = "did:ont:AYmpvkUHi5GzkXbeMscrkkzGco9nyNGNjX";
