@@ -7,32 +7,51 @@
     <script src="../sdk.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
     <script>
-        let content;
-        const did = 'did:ont:AYmpvkUHi5GzkXbeMscrkkzGco9nyNGNjX';
-        // const did = 'did:ont:AQC3dw2aoZxoUkGpkWY9QfvcPFWRq6qmxR';
-        const ddoUrl = 'https://polarisexplorer.ont.io/api/v1/explorer/ontid/' + did + '/20/1';
-        (async () => {
+        const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
+        const verifyUrl = '/verify';
+
+        function show() {
+            const msg = document.getElementById('verifying');
+            const verifiedMsg = document.getElementById('verified');
+            const resultDiv = document.getElementById('result');
+            msg.style.display = 'none';
+            verifiedMsg.style.display = 'inline';
+            resultDiv.style.display = 'inline';
+        }
+
+        function hide(msgBody) {
+            const msg = document.getElementById('verifying');
+            const verifiedMsg = document.getElementById('verified');
+            const resultDiv = document.getElementById('result');
+            msg.innerHTML = msgBody;
+            msg.style.display = 'inline';
+            verifiedMsg.style.display = 'none';
+            resultDiv.style.display = 'none';
+        }
+
+        async function verify() {
+            const did = document.getElementById('did').value;
+            const msg = document.getElementById('verifying');
+            const verifiedMsg = document.getElementById('verified');
+            const resultDiv = document.getElementById('result');
+            hide('verifying...');
             try {
-                const response = await fetch(ddoUrl);
+                const response = await fetch(verifyUrl, {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json; charset=utf-8",
+                    },
+                    body: JSON.stringify({
+                        did: did
+                    })
+                });
                 const json = await response.json();
-                if (json.Error !== 0) {
-                    throw new Error('json.Error is ' + json.Error + ', expected 0. ' + JSON.stringify(json));
+                await sleep(1200);
+                if (!json.verified) {
+                    throw new Error('Verification failed: ' + JSON.stringify(json));
                 }
-                const ddo = json.Result.Ddo;
-                // console.log(ddo);
-                if (ddo.Attributes.length === 0) {
-                    throw new Error('No attribute in DDO: ' + JSON.stringify(ddo));
-                }
-                const targetAttr = _.find(ddo.Attributes, 'SelfDefined.cerverified');
-                if (typeof targetAttr === 'undefined') {
-                    throw new Error('No cerverified attribute in DDO: ' + JSON.stringify(ddo.Attributes));
-                }
-
-                const cerverified = JSON.parse(targetAttr.SelfDefined.cerverified);
-
-                const val =  Ont.Claim.deserialize(cerverified.Value);
-                content = val.content
-                // console.log(content);
+                show();
+                const content = json.claim.content;
                 document.getElementById('Name').innerHTML = unescape(content.Name);
                 document.getElementById('TeamName').innerHTML = 'Team ' + unescape(content.TeamName);
                 document.getElementById('ProgramName').innerHTML = content.Program.Name;
@@ -41,31 +60,9 @@
                 document.getElementById('ProgramUrl').href = content.Program.Url;
                 document.getElementById('ProgramImageUrl').src = content.Program.ImageUrl;
             } catch (error) {
+                hide('verification failed');
                 console.error(error);
             }
-        })();
-
-        const verifyUrl = '/verify';
-        async function verify() {
-            const msg = document.getElementById('verifying');
-            msg.style.display = 'inline';
-            const response = await fetch(verifyUrl, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json; charset=utf-8",
-                },
-                body: JSON.stringify({
-                    did: did
-                })
-            });
-            const json = await response.json();
-            setInterval(() => {
-                if (json.verified) {
-                    msg.style.display = 'none';
-                    const img = document.getElementById('verified');
-                    img.style.display = 'inline';
-                }
-            }, 1800);
         }
 
     </script>
@@ -73,19 +70,28 @@
 <header>
 </header>
 <body>
-    <div class="container">
-    <p class="prize title">Certification detail</p>
-    <div class="prize-badge">
-    <img class="prize-badge-img" src="../img/certificate_img.png" alt="">
-    <p id="Name" class="user-name inside-img"></p>
-    <p id="TeamName" class="description-of-hackathon inside-img"></p>
-    <p id="ProgramName" class="description-of-skill inside-img"></p>
-    <p id="ProgramDate" class="date inside-img"></p>
-    <p id="ProgramIssuer" class="signature inside-img"></p>
+    <div>Input did</div>
+    <input id="did" name='did' value='did:ont:AYmpvkUHi5GzkXbeMscrkkzGco9nyNGNjX' size='60' />
+    <br>
+    <div>
+        <input id="verify" type='button' class="button" value="Verify" onclick="verify()" />
+        <p id="verifying" style="display:none">verifying...</p>
+        <p id="verified" style="display:none;"><img src="../img/verified.png" style="width:50;" />verified</p>
     </div>
-    <p class="prize title">Information</p>
-    <div><input id="verify" type='button' class="button" value="Verify" onclick="verify()" /><p id="verifying" style="display:none">loading...</p><img id="verified" src="../img/verified.png" style="display:none; width:50;" /></div>
-    <div><a id="ProgramUrl" href="#"><img id="ProgramImageUrl" src="#" /></a></div>
+    <div id="result" style="display:none;">
+        <div class="container">
+        <p class="prize title">Certification detail</p>
+        <div class="prize-badge">
+        <img class="prize-badge-img" src="../img/certificate_img.png" alt="">
+        <p id="Name" class="user-name inside-img"></p>
+        <p id="TeamName" class="description-of-hackathon inside-img"></p>
+        <p id="ProgramName" class="description-of-skill inside-img"></p>
+        <p id="ProgramDate" class="date inside-img"></p>
+        <p id="ProgramIssuer" class="signature inside-img"></p>
+        </div>
+        <p class="prize title">Information</p>
+        <div><a id="ProgramUrl" href="#"><img id="ProgramImageUrl" src="#" /></a></div>
+        </div>
     </div>
 </body>
 </html>
