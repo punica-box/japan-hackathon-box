@@ -13,11 +13,11 @@ function convertValue(value: string, type: ParameterType): any {
   }
 }
 
-export async function getPlayerGameList(values: any) {
+export async function getPlayerGameList() {
   // TODO: 本来のコントラクトアドレスと関数名に変更する
   const scriptHash: string = "39f3fb644842c808828817bd73da0946d99f237f";
   const operation: string = "Hello";
-  const parametersRaw: any[] = values.parameters;
+  const parametersRaw: any[] = [];
   const args = parametersRaw.map(raw => ({
     type: raw.type,
     value: convertValue(raw.value, raw.type)
