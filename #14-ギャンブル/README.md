@@ -1,5 +1,2 @@
-# japan-hackathon-box
-
-
-## Welcome to join this hachathon
-
+# ontVegas
+ontVegas is safe and secure Casino!!
