@@ -27,19 +27,19 @@
         client.registerClient({});
 
         //Get Address
-        const account = await client.api.asset.getAccount();
-        document.getElementById("account").innerHTML = account;
+        //const account = await client.api.asset.getAccount();
+        //document.getElementById("account").innerHTML = account;
 
         //Get balance
-        const balance = await client.api.network.getBalance({ address: account });
-        document.getElementById("ong").innerHTML = balance.ONG;
-        document.getElementById("ont").innerHTML = balance.ONT;
-        document.getElementById("gwt").innerHTML = balance.GWT;
-        document.getElementById("mrt").innerHTML = balance.MRT;
+        //const balance = await client.api.network.getBalance({ address: account });
+        //document.getElementById("ong").innerHTML = balance.ONG;
+        //document.getElementById("ont").innerHTML = balance.ONT;
+        //document.getElementById("gwt").innerHTML = balance.GWT;
+        //document.getElementById("mrt").innerHTML = balance.MRT;
 
         //const identity = await 
         const identity = await client.api.identity.getIdentity();
-        document.getElementById("identity").innerHTML = identity;
+        document.getElementById("identity").value = identity;
 
     }
 
@@ -127,7 +127,8 @@
 
     async function issueClaim() {
         if (inputData.name.value === "" ||  inputData.teamName.value === "") {
-            return;
+            debugger;
+            return false;
         }
         const claim = buildClaim();
 
@@ -219,12 +220,13 @@
         <div class="col-md-12 order-md-1">
           <h4 class="mb-3">Claim Data</h4>
           <form class="needs-validation" name="inputData">
+
             <div class="row">
               <div class="col-md-6 mb-3">
-                <label for="name">Your Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Jun Li" value="" required>
+                <label for="name">Ont ID</label>
+                <input type="text" class="form-control" id="identity" placeholder="" value="" required disabled>
                 <div class="invalid-feedback">
-                  Valid name is required.
+                    Ont ID is required
                 </div>
               </div>
             </div>
@@ -235,6 +237,17 @@
                 <input type="text" class="form-control" id="eventURL" value="https://ontology.connpass.com/event/106684/" required disabled>
                 <div class="invalid-feedback" style="width: 100%;">
                     Event URL is Required
+                </div>
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="name">Your Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Jun Li" value="" required>
+                <div class="invalid-feedback">
+                  Valid name is required.
                 </div>
               </div>
             </div>
@@ -266,7 +279,8 @@
 
 
             <hr class="mb-4">
-            <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="issueClaim()">Issue!</button>
+            <button class="btn btn-primary btn-lg btn-block" type="submit"
+             onclick="issueClaim(); return false;">Issue!</button>
           </form>
         </div>
       </div>
