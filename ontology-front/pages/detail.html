@@ -34,6 +34,8 @@
                 document.getElementById('ProgramName').innerHTML = content.Program.Name;
                 document.getElementById('ProgramDate').innerHTML = content.Program.Date;
                 document.getElementById('ProgramIssuer').innerHTML = content.Program.Issuer;
+                document.getElementById('ProgramUrl').href = content.Program.Url;
+                document.getElementById('ProgramImageUrl').src = content.Program.ImageUrl;
             } catch (error) {
                 console.error(error);
             }
@@ -47,17 +49,14 @@
     <p class="prize title">Certification detail</p>
     <div class="prize-badge">
     <img class="prize-badge-img" src="../img/certificate_img.png" alt="">
-    <p id="Name" class="user-name inside-img">Yusuke Enomoto</p>
-    <p id="TeamName" class="description-of-hackathon inside-img">description of hackathon</p>
-    <p id="ProgramName" class="description-of-skill inside-img">description of user's skill</p>
-    <p id="ProgramDate" class="date inside-img">2018/12/09</p>
-    <p id="ProgramIssuer" class="signature inside-img">Mosa Siru</p>
+    <p id="Name" class="user-name inside-img"></p>
+    <p id="TeamName" class="description-of-hackathon inside-img"></p>
+    <p id="ProgramName" class="description-of-skill inside-img"></p>
+    <p id="ProgramDate" class="date inside-img"></p>
+    <p id="ProgramIssuer" class="signature inside-img"></p>
     </div>
     <p class="prize title">Information</p>
-    <div>aaa</div>
-    <div>aaa</div>
-    <div>aaa</div>
-    <div>aaa</div>
+    <div><a id="ProgramUrl" href="#"><img id="ProgramImageUrl" src="#" /></a></div>
     </div>
 </body>
 </html>
