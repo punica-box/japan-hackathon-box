@@ -2,6 +2,9 @@ import * as React from "react";
 import { RouterProps } from "react-router";
 import { lifecycle, ReactLifeCycleFunctions } from "recompose";
 
+import bedealer from "./img/bedealer.png";
+import beplayer from "./img/beplayer.png";
+
 export const Top: React.SFC<RouterProps> = props => {
   function bePlayer() {
     props.history.push("/player-gamelist");
@@ -13,10 +16,12 @@ export const Top: React.SFC<RouterProps> = props => {
 
   return (
     <div>
-      <button onClick={bePlayer}>bePlayer</button>
-      <hr />
-      <button onClick={beDealer}>beDealer</button>
-      <hr />
+      <button>
+        <img src={beplayer} onClick={bePlayer} />
+      </button>
+      <button>
+        <img src={bedealer} onClick={beDealer} />
+      </button>
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import * as React from "react";
 import { RouterProps } from "react-router";
-import { lifecycle, ReactLifeCycleFunctions } from "recompose";
 
 import bedealer from "./img/bedealer.png";
 import beplayer from "./img/beplayer.png";
@@ -25,18 +24,3 @@ export const Top: React.SFC<RouterProps> = props => {
     </div>
   );
 };
-
-const lifeCycleFunctions: ReactLifeCycleFunctions<RouterProps, {}> = {
-  componentWillMount() {
-    alert("component will mount");
-    // tslint:disable-next-line:no-console
-    console.log("component will mount");
-  },
-  componentDidMount() {
-    alert("component did mount");
-    // tslint:disable-next-line:no-console
-    console.log("component did mount");
-  }
-};
-
-export default lifecycle<RouterProps, {}>(lifeCycleFunctions)(Top);

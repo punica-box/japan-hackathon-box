@@ -10,6 +10,9 @@ import {
   withStateHandlers
 } from "recompose";
 
+import poker from "./img/icon_poker.png";
+import slot from "./img/icon_slot.png";
+
 // tslint:disable-next-line:interface-over-type-literal
 type Outter = {}; // ここから外側のプロパティを注入できる。
 
@@ -44,7 +47,12 @@ const PlayerGameList: React.SFC<Props> = props => {
 
   return (
     <div>
-      <button onClick={playChinchiro}>playChinchiro</button>
+      <button>
+        <img src={poker} onClick={playChinchiro} />
+      </button>
+      <button>
+        <img src={slot} onClick={playChinchiro} />
+      </button>
     </div>
   );
 };
