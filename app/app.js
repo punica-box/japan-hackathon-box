@@ -3,11 +3,15 @@ const Ont = require('./node_modules/ontology-ts-sdk/lib/index.js')
 var express = require('express')
 var app = express()
 let ejs = require('ejs')
+let fs = require('fs')
  
 app.get('/', function (req, res) {
   res.send('Hello World')
   res.send(html)
 })
+
+app.use(express.static('.'));
+
 app.get('/verify', async function (req, res) {
   const did = "did:ont:AYmpvkUHi5GzkXbeMscrkkzGco9nyNGNjX"
   template = `

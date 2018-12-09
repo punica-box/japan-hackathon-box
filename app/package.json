@@ -11,6 +11,11 @@
   "license": "ISC",
   "dependencies": {
     "ontology-dapi": "^0.4.6",
-    "ontology-ts-sdk": "^1.0.9"
+    "ontology-ts-sdk": "^1.0.9",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "lodash": "^4.17.11",
+    "node-fetch": "^2.3.0",
+    "nodemon": "^1.18.7"
   }
 }
