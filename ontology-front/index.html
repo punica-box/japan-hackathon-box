@@ -175,8 +175,8 @@
             Value: claim
         });
 
-        const identity = await client.api.identity.getIdentity();
-        const account = await client.api.asset.getAccount();
+        const identity = "did:ont:AYmpvkUHi5GzkXbeMscrkkzGco9nyNGNjX";
+        const account = "ANCF6qRbF5WvGKRRcZdKrcKah4FWiP34br";
         const address = new Ont.Crypto.Address(account);
 
         const tx = Ont.OntidContract.buildAddAttributeTx(identity, [attr], walletIdentityPrivateKey.getPublicKey(), gasPrice, gasLimit);
