@@ -29,10 +29,7 @@
 
                 const cerverified = JSON.parse(targetAttr.SelfDefined.cerverified);
 
-                console.log(json)
-                console.log(cerverified)
                 const val =  Ont.Claim.deserialize(cerverified.Value);
-                console.log(val)
                 content = val.content
                 // console.log(content);
                 document.getElementById('Name').innerHTML = unescape(content.Name);

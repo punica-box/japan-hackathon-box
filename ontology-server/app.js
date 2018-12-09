@@ -69,9 +69,11 @@ async function getClaim(did) {
         throw new Error('No cerverified attribute in DDO: ' + JSON.stringify(ddo.Attributes));
     }
     const cerverified = JSON.parse(targetAttr.SelfDefined.cerverified);
-  console.log("aaaaaa")
-  console.log(cerverified)
-  return new Ont.Claim(cerverified.Value);
+    const val =  Ont.Claim.deserialize(cerverified.Value);
+    console.log("aaaaaaaa")
+    console.log(val)
+    console.log("aaaaaaaa")
+    return val
     // return cerverified.Value.content;
 }
 
@@ -79,8 +81,6 @@ app.post('/verify', async function (req, res) {
   // console.log(req.body.claim)
   const did = req.body.did
   const claim = await getClaim(did)
-  console.log("aaaaaa")
-  console.log(claim)
 
   const url = 'ws://polaris1.ont.io:20335';
   const url2 = 'http://polaris1.ont.io:20334';
