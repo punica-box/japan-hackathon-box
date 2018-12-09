@@ -6,7 +6,6 @@ We chn prove the fact we are attendees of a hackathon, and anyone verify it.
 ## usage
 
 ```
-cd app
 npm install
 node app.js
 ```
