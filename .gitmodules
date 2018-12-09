@@ -1,0 +1,6 @@
+[submodule "#3-ONTlock/ONTlock"]
+	path = "#3-ONTlock/ONTlock"
+	url = https://github.com/Ryucoin/ONTlock
+[submodule "#3-ONTlock/ONTlockDB"]
+	path = "#3-ONTlock/ONTlockDB"
+	url = https://github.com/Ryucoin/ONTlockDB

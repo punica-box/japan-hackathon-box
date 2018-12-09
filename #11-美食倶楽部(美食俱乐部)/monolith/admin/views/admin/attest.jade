@@ -1,0 +1,7 @@
+extends ../layout
+
+block content
+  h1= title
+  form(method="POST", target="./attest")
+    input(type="text", name="subject")
+    input(type="submit", value="送信")

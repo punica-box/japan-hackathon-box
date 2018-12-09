@@ -1,0 +1,30 @@
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+
+# Python - https://www.python.org/
+[*.py]
+indent_style = space
+indent_size = 4
+
+# JavaScript - https://developer.mozilla.org/ja/docs/Web/JavaScript
+# TypeScript - https://www.typescriptlang.org/
+[*.{js,ts,tsx,json}]
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = true
+
+# Sass, SCSS - http://sass-lang.com/
+[*.{sass,scss}]
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = true
+
+# YAML - http://yaml.org/
+[{*.yml,*.yaml}]
+indent_style = space
+indent_size = 2

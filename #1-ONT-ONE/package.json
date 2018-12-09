@@ -1,0 +1,62 @@
+{
+  "name": "asset-creation-portal",
+  "version": "1.0.0",
+  "description": "This is a portal for users to create their own digital assets.",
+  "scripts": {
+    "start": "webpack-dev-server",
+    "build": "webpack & node server.js",
+    "dist": "webpack --env.DISTRIBUTION=true"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dappCity2020/asset-creation-portal"
+  },
+  "engines": {
+    "node": ">=6.3.0"
+  },
+  "engineStrict": true,
+  "author": "Nick Fujita (nickfujita@gmail.com)",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/react": "^16.0.18",
+    "@types/react-dom": "^16.0.2",
+    "@types/react-redux": "^5.0.10",
+    "@types/react-router": "^3.0.13",
+    "@types/react-router-redux": "^4.0.50",
+    "@types/webpack-env": "^1.13.2",
+    "css-loader": "^0.28.7",
+    "file-loader": "^1.1.5",
+    "html-webpack-inline-source-plugin": "0.0.9",
+    "html-webpack-plugin": "^2.30.1",
+    "node-sass": "^4.5.3",
+    "redux-logger": "^3.0.6",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.19.0",
+    "stylelint": "^8.2.0",
+    "stylelint-webpack-plugin": "^0.9.0",
+    "svg-url-loader": "^2.3.2",
+    "ts-loader": "^3.0.5",
+    "tslint": "^5.8.0",
+    "tslint-loader": "^3.5.3",
+    "tslint-react": "^3.2.0",
+    "typescript": "^2.5.3",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.8.1",
+    "webpack-dev-middleware": "^1.12.0",
+    "webpack-dev-server": "^2.9.3",
+    "webpack-hot-middleware": "^2.20.0"
+  },
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "o3-dapi-core": "^0.0.8",
+    "o3-dapi-ont": "^0.0.7",
+    "ontology-ts-sdk": "^1.0.9",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-redux": "^4.4.8",
+    "react-router": "^3.2.0",
+    "react-router-redux": "^4.0.8",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0"
+  }
+}

@@ -1,0 +1,140 @@
+body {
+  height: 100%;
+  margin: 0;
+  background: linear-gradient(rgb(0, 0, 0) 25%, rgb(55, 182, 211));
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: 'Rubik';
+}
+
+.index {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  button {
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    background-color: #37b6d3;
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .last-button {
+    margin-bottom: 0;
+  }
+}
+
+.content-card {
+  background: rgba(255, 255, 255, 0.75);
+  padding: 3rem;
+  padding-top: 2rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 2rem;
+  text-align: center;
+}
+
+.account {
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+  color: white;
+  text-align: right;
+
+  .label {
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .address {
+    margin-bottom: 0.25rem;
+  }
+
+  .disconnect {
+    color: red;
+    opacity: 0.85;
+    cursor: pointer;
+  }
+}
+
+.ont-one-logo {
+  background-image: url('../assets/ontOneLogo.png');
+  background-size: contain;
+  height: 10rem;
+  width: 10rem;
+  position: absolute;
+  top: 0;
+  left:  0;
+  padding: 1rem 2rem;
+  background-repeat: no-repeat;
+}
+
+.connect-container {
+  background-color: #218FFF;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  width: 57%;
+  margin: auto;
+  margin-top: 2rem;
+
+  .connect-o3 {
+    background-image: url('../assets/connectO3.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 2.5rem;
+  }
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.submit-button {
+  background-color: #218FFF;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  width: 57%;
+  margin: auto;
+  margin-top: 2rem;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+
+  &.back {
+    width: 3rem;
+    position: absolute;
+    top: -1.25rem;
+    left: 1rem;
+  }
+}
+
+.row {
+  margin-bottom: 1rem;
+  text-align: left;
+
+  &.center {
+    text-align: center;
+  }
+
+  .description {
+    margin-bottom: 0.5rem;
+  }
+
+  input {
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    width: 90%;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+}
