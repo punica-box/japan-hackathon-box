@@ -37,7 +37,6 @@
         //document.getElementById("gwt").innerHTML = balance.GWT;
         //document.getElementById("mrt").innerHTML = balance.MRT;
 
-        //const identity = await 
         const identity = await client.api.identity.getIdentity();
         document.getElementById("identity").value = identity;
 
@@ -53,11 +52,9 @@
 
     //SDK test
     async function createIdentity() {
-        console.log(Ont.Crypto)
         var wallet = await Ont.Wallet.create('test');
         //Private key 生成
         const privateKey = Ont.Crypto.PrivateKey.random();
-
         console.log(privateKey)
 
         //Identity作成
@@ -127,7 +124,6 @@
 
     async function issueClaim() {
         if (inputData.name.value === "" ||  inputData.teamName.value === "") {
-            debugger;
             return false;
         }
         const claim = buildClaim();
@@ -294,37 +290,6 @@
         </ul>
       </footer>
     </div>
-
-    <!-- <div class="container">                                                                                  -->
-
-
-    <!--     <form name="inputData">                                                                              -->
-    <!--         <div class="admin-item clearfix">                                                                -->
-    <!--         <label class="admin-label">Your name:</label><input type='text' name='name' value='Your name' /> -->
-    <!--         </div>                                                                                           -->
-    <!--         <div class="admin-item clearfix">                                                                -->
-    <!--         <label class="admin-label">Select your team name:</label>                                        -->
-    <!--         <select id="teamName" name="teamName">                                                           -->
-    <!--             <option value="リボ払い">リボ払い</option>                                           -->
-    <!--             <option value="volvox">volvox</option>                                                       -->
-    <!--             <option value="報われるべきこの世界">報われるべきこの世界</option>       -->
-    <!--             <option value="DappCity">DappCity</option>                                                   -->
-    <!--             <option value="Blockchain-Nagoya">Blockchain-Nagoya</option>                                 -->
-    <!--             <option value="チーム廃課金">チーム廃課金</option>                               -->
-    <!--             <option value="オリンピックチーム">オリンピックチーム</option>             -->
-    <!--             <option value="ギャンブル">ギャンブル</option>                                     -->
-    <!--             <option value="Cerverified">Cerverified</option>                                             -->
-    <!--             <option value="美食倶楽部">美食倶楽部</option>                                     -->
-    <!--             <option value="mesi">mesi</option>                                                           -->
-    <!--             <option value="高輪ゲートウェイ(仮)">高輪ゲートウェイ(仮)</option>         -->
-    <!--             <option value="放課後揺れるネコ">放課後揺れるネコ</option>                   -->
-    <!--         </select>                                                                                        -->
-    <!--         </div>                                                                                           -->
-    <!--         <div class="admin-item clearfix">                                                                -->
-    <!--         <div><input type='button' class="button" onclick="issueClaim()" value="IssueClaim" /></div>      -->
-    <!--         </div>                                                                                           -->
-    <!--     </form>                                                                                              -->
-    <!-- </div>                                                                                                   -->
     <!-- Account:                                                                -->
     <!-- <p id="account"></p>                                                    -->
 
