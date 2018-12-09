@@ -103,8 +103,8 @@
 
         claim.context = 'https://example.com/template/v1';
         claim.content = {
-            Name: inputData.name.value,
-            TeamName: inputData.teamName.value,
+            Name: escape(inputData.name.value),
+            TeamName: escape(inputData.teamName.value),
             Program: {
                 Name: "Ontology Hackathon Tokyo #1",
                 Url: 'https://ontology.connpass.com/event/106684/',
