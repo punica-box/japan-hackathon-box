@@ -29,8 +29,8 @@
                 const cerverified = JSON.parse(targetAttr.SelfDefined.cerverified);
                 content = cerverified.Value.content;
                 // console.log(content);
-                document.getElementById('Name').innerHTML = content.Name;
-                document.getElementById('TeamName').innerHTML = 'Team ' + content.TeamName;
+                document.getElementById('Name').innerHTML = unescape(content.Name);
+                document.getElementById('TeamName').innerHTML = 'Team ' + unescape(content.TeamName);
                 document.getElementById('ProgramName').innerHTML = content.Program.Name;
                 document.getElementById('ProgramDate').innerHTML = content.Program.Date;
                 document.getElementById('ProgramIssuer').innerHTML = content.Program.Issuer;
