@@ -694,5 +694,14 @@ def DiceResult():
         deal_result = "error"
         deal_ratio = 0
     
-    Notify(["DiceResult", dealer_dice1,dealer_dice2,dealer_dice3,player_dice1,player_dice2,player_dice3,deal_result,deal_ratio])
-    return deal_result
+    result_map = {
+        "dealer_dice1": str(dealer_dice1),
+        "dealer_dice2": str(dealer_dice2),
+        "dealer_dice3": str(dealer_dice3),
+        "player_dice1": str(player_dice1),
+        "player_dice2": str(player_dice2),
+        "player_dice3": str(player_dice3),
+        "deal_result": deal_result,
+        "deal_ratio": deal_ratio,
+    }
+    return True
