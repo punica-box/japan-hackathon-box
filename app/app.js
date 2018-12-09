@@ -1,20 +1,20 @@
-const Ont = require('./node_modules/ontology-ts-sdk/lib/index.js')
+const Ont = require('./node_modules/ontology-ts-sdk/lib/index.js');
 
-var express = require('express')
-var app = express()
-let ejs = require('ejs')
-let fs = require('fs')
+const express = require('express');
+const app = express();
+const ejs = require('ejs');
+const fs = require('fs');
  
 app.get('/hello', function (req, res) {
-  res.send('Hello World')
-  res.send(html)
+  res.send('Hello World');
+  res.send(html);
 })
 
 app.use(express.static('.')); // TODO move static files to public for security
 
 app.get('/verify', async function (req, res) {
-  const did = "did:ont:AYmpvkUHi5GzkXbeMscrkkzGco9nyNGNjX"
-  template = `
+  const did = "did:ont:AYmpvkUHi5GzkXbeMscrkkzGco9nyNGNjX";
+  const template = `
     <form name="VerifyClaim" method="post">
       <div class="admin-item clearfix" >
         <label class="admin-label" >did:</label>
@@ -25,13 +25,13 @@ app.get('/verify', async function (req, res) {
       </div>
       </div>
     </form>
-  `
-  html = ejs.render(
+  `;
+  const html = ejs.render(
     template,
     {did: did}
-  )
-  res.send(html)
-})
+  );
+  res.send(html);
+});
 
 
 const _ = require('lodash');
