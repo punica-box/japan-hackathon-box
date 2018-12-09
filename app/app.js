@@ -5,12 +5,12 @@ var app = express()
 let ejs = require('ejs')
 let fs = require('fs')
  
-app.get('/', function (req, res) {
+app.get('/hello', function (req, res) {
   res.send('Hello World')
   res.send(html)
 })
 
-app.use(express.static('.'));
+app.use(express.static('.')); // TODO move static files to public for security
 
 app.get('/verify', async function (req, res) {
   const did = "did:ont:AYmpvkUHi5GzkXbeMscrkkzGco9nyNGNjX"
@@ -60,7 +60,7 @@ async function getClaim(did) {
         throw new Error('No cerverified attribute in DDO: ' + JSON.stringify(ddo.Attributes));
     }
     const cerverified = JSON.parse(targetAttr.SelfDefined.cerverified);
-    return  Ont.Claim.deserialize(cerverified.Value);
+    return Ont.Claim.deserialize(cerverified.Value);
 }
 
 app.post('/verify', async function (req, res) {
