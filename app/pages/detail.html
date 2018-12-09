@@ -10,16 +10,17 @@
         const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
         const verifyUrl = '/verify';
 
-        function show() {
+        async function show() {
             const msg = document.getElementById('verifying');
             const verifiedMsg = document.getElementById('verified');
             const resultDiv = document.getElementById('result');
             msg.style.display = 'none';
             verifiedMsg.style.display = 'inline';
+            await sleep(800);
             resultDiv.style.display = 'inline';
         }
 
-        function hide(msgBody) {
+        async function hide(msgBody) {
             const msg = document.getElementById('verifying');
             const verifiedMsg = document.getElementById('verified');
             const resultDiv = document.getElementById('result');
