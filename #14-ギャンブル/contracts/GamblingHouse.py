@@ -1,5 +1,5 @@
 from boa.interop.System.Runtime import Notify, Serialize, Deserialize
-from boa.interop.System.ExecutionEngine import GetExecutingScriptHash
+from boa.interop.System.ExecutionEngine import GetExecutingScriptHash, GetCallingScriptHash
 from boa.interop.System.Runtime import CheckWitness
 from boa.interop.System.Storage import GetContext, Get, Put
 from boa.builtins import ToScriptHash, sha256, concat, range
@@ -13,6 +13,7 @@ DEALER_ROOMS_KEY = "dealer_rooms_all:"
 ROOMS_KEY = "rooms_map:"
 ALL_ROOMS_KEY = "all_rooms"
 DEALER_DEPOSITE_MAP = "dealer_deposite_key:"
+MAX_GAME_ID = "max_game_id"
 
 DECIMAL_FACTOR = 1000000000
 
@@ -49,11 +50,6 @@ def Main(operation, args):
     if operation == "GetRoomByID":
         room_id = args[0]
         return GetRoomByID(room_id)
-    # if operation == "depositOngToContract":
-    #     addr = args[0]
-    #     room_id = args[1]
-    #     ong_amount = args[2]
-    #     return depositOngToContract(addr, room_id, ong_amount)
         
 def Initialize():
     ctx = GetContext()
@@ -64,6 +60,7 @@ def Initialize():
         
     Notify("initialized")
     Put(ctx, ALL_ROOMS_KEY,  Serialize([]))
+    Put(ctx, MAX_GAME_ID, 1)
     return True
 
 def IsInvoker3(addr):
@@ -128,10 +125,9 @@ def IsRegistered(addr):
 # 引数は全部string
 def CreateRoom(addr, dealer_rate, minbet, gamble_rate, deposit_ong):
     # checking if the sent address is actually sender
-    # # NOTE: we can't use Base58ToAddress in solochain 
-    # if CheckWitness(Base58ToAddress(addr)) == False:
-    #     Notify("not sender")
-    #     return True
+    if CheckWitness(Base58ToAddress(addr)) == False:
+        Notify("not sender")
+        return True
         
     if IsRegistered(addr) == False:
         Notify("not registered")
@@ -208,10 +204,9 @@ def GetAllRooms():
 # NOTE fromAccount is Address (base58)
 def depositOngToContract(fromAccount, room_id, ong_amount):
     # checking if the sent address is actually sender
-    # NOTE: we can't use Base58ToAddress in solochain 
-    # if CheckWitness(Base58ToAddress(fromAccount)) == False:
-    #     Notify("not sender")
-    #     return True
+    if CheckWitness(Base58ToAddress(fromAccount)) == False:
+        Notify("not sender")
+        return True
     if IsRegistered(fromAccount) == False:
         Notify(["depositOngToContract", "not registered"])
         return True
@@ -231,3 +226,46 @@ def depositOngToContract(fromAccount, room_id, ong_amount):
     else:
         Notify('transfer Ong failed')
         return False
+        
+
+def PlayGame(addr, bet_ong_amount, room_id):
+    if CheckWitness(Base58ToAddress(addr)) == False:
+        Notify("not sender")
+        return True
+    
+    if bet_ong_amount < 0:
+        Notify("bet amount is zero")
+        return True
+
+    if room_id < 0:
+        Notify("falsy room_id")
+        return True
+    
+    room_setting_raw = Get(ctx, room_id)
+    room_setting = Serialize(room_setting_raw)
+    # FIXME if we can convert str into int we're able to check minbet < bet_ong_amount
+    minbet = room_setting["minbet"]
+    # TODO CHECK minbet < bet_ong_amount
+    # issue game_id
+    ctx = GetContext()
+    latest_game_id = Get(ctx, MAX_GAME_ID)
+    new_game_id = latest_game_id + 1
+    
+    # player deposits bet_ong_amount to contract
+    param = state(Base58ToAddress(fromAccount), selfContractAddress, DECIMAL_FACTOR * bet_ong_amount)
+    
+    res = Invoke(0, OngContractAddress, 'transfer', [param])
+    if res and res == b'\x01':
+        Notify(["PlayGame", new_game_id])
+        Notify(["PlayGame", addr, ong_amount])
+    else:
+        Notify('transfer Ong failed')
+        return False 
+        
+CHINCIRO_DICE_CONTRACT = ToScriptHash("94407f241862c0e57ba6199f6cad09f03f951590")
+
+def FixGamblingResult():
+    caller_adress = GetCallingScriptHash()
+    if caller_adress != CHINCIRO_DICE_CONTRACT:
+        Nofity([FixGamblingResult, "Falsy Execution"])
+        return True

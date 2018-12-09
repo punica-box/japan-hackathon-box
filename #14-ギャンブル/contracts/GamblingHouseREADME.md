@@ -6,7 +6,7 @@ Paste to SmartX & deploy
 
 - dealer登録
    - RegisterAsDealer
-- 賭場作成(引数は全部string
+- 賭場作成(引数は全部deposit_ong以外 string, deposit_ongはintでお願いします。
    - CreateRoom(addr, dealer_rate, minbet, gamble_rate, deposit_ong)
 - 最新の賭場ID取得(READONLY) = PreExec or PreRunで読んでください
    - GetLatestRoomID()
