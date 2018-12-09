@@ -1,7 +1,17 @@
 # japan-hackathon-box
-Repo of Ontology Japan Hackathon entries
 
-## Welcome to join this hachathon
+We developed verifiable certification on Ontology Blockchain.
 
-Please fork this repo and push your projects, docs and presentation to your forked repo， then make a "pull request".
-Thanks! 😊
+## usage
+
+```
+cd app
+npm install
+node app.js
+```
+
+Issuing page:
+http://localhost:3000
+
+Verifying page:
+http://localhost:3000/pages/detail.html
