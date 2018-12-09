@@ -2,9 +2,17 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="./style.css">
-    <title></title>
-</head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- <link rel="stylesheet" href="./style.css"> -->
+    <title>Issue Claim</title>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+
 
 <script src="./dapi.js"></script>
 <script src="./sdk.js"></script>
@@ -118,6 +126,9 @@
     }
 
     async function issueClaim() {
+        if (inputData.name.value === "" ||  inputData.teamName.value === "") {
+            return;
+        }
         const claim = buildClaim();
 
         const url2 = 'http://polaris1.ont.io:20334';
@@ -175,6 +186,10 @@
         const socketClient = new Ont.WebsocketClient(url);
         const res = await socketClient.sendRawTransaction(tx.serialize(), false, true);
         console.log(res);
+        if (res.Desc === "SUCCESS") {
+            $('#successAlert').show()
+        }
+
     }
 
     dapi();
@@ -183,61 +198,144 @@
 
 </script>
 
+</head>
 
 <body>
-    <div class="container">
-        <form name="inputData">
-            <div class="admin-item clearfix">
-            <label class="admin-label">Your name:</label><input type='text' name='name' value='Your name' />
-            </div>
-            <div class="admin-item clearfix">
-            <label class="admin-label">Select your team name:</label>
-            <select id="teamName" name="teamName">
-                <option value="リボ払い">リボ払い</option>
-                <option value="volvox">volvox</option>
-                <option value="報われるべきこの世界">報われるべきこの世界</option>
-                <option value="DappCity">DappCity</option>
-                <option value="Blockchain-Nagoya">Blockchain-Nagoya</option>
-                <option value="チーム廃課金">チーム廃課金</option>
-                <option value="オリンピックチーム">オリンピックチーム</option>
-                <option value="ギャンブル">ギャンブル</option>
-                <option value="Cerverified">Cerverified</option>
-                <option value="美食倶楽部">美食倶楽部</option>
-                <option value="mesi">mesi</option>
-                <option value="高輪ゲートウェイ(仮)">高輪ゲートウェイ(仮)</option>
-                <option value="放課後揺れるネコ">放課後揺れるネコ</option>
-            </select>
-            </div>
-            <div class="admin-item clearfix">
-            <div><input type='button' class="button" onclick="issueClaim()" value="IssueClaim" /></div>
-            </div>
-        </form>
+    <div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert" style="display: none;">
+      <strong>Success!!</strong>  <a href="/pages/detail.html" class="alert-link" style="text-decoration: underline">check and varify your claim!</a>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
-    Account:
-    <p id="account"></p>
 
-    ONG:
-    <p id="ong"></p>
+    <div class="container">
+      <div class="py-3 text-center">
+        <img class="d-block mx-auto mb-4" src="https://pbs.twimg.com/profile_banners/922358568602365953/1519103895/1500x500" alt="" width="400">
+        <h2>Attest Claim</h2>
+        <p class="lead">Please input the event and your team information!</p>
+      </div>
 
-    ONT:
-    <p id="ont"></p>
+      <div class="row">
+        <div class="col-md-12 order-md-1">
+          <h4 class="mb-3">Claim Data</h4>
+          <form class="needs-validation" name="inputData">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="name">Your Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Jun Li" value="" required>
+                <div class="invalid-feedback">
+                  Valid name is required.
+                </div>
+              </div>
+            </div>
 
-    Giwa Token:
-    <p id="gwt"></p>
+            <div class="mb-3">
+              <label for="teamName">Event URL</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="eventURL" value="https://ontology.connpass.com/event/106684/" required disabled>
+                <div class="invalid-feedback" style="width: 100%;">
+                    Event URL is Required
+                </div>
+              </div>
+            </div>
 
-    Marianne:
-    <p id="mrt"></p>
+            <div class="row">
+              <div class="col-md-5 mb-3">
+                <label for="teamName">Team</label>
+                <select class="custom-select d-block w-100" id="teamName" required>
+                  <option value="">Choose...</option>
+                  <option value="リボ払い">リボ払い</option>
+                  <option value="volvox">volvox</option>
+                  <option value="報われるべきこの世界">報われるべきこの世界</option>
+                  <option value="DappCity">DappCity</option>
+                  <option value="Blockchain-Nagoya">Blockchain-Nagoya</option>
+                  <option value="チーム廃課金">チーム廃課金</option>
+                  <option value="オリンピックチーム">オリンピックチーム</option>
+                  <option value="ギャンブル">ギャンブル</option>
+                  <option value="Cerverified">Cerverified</option>
+                  <option value="美食倶楽部">美食倶楽部</option>
+                  <option value="mesi">mesi</option>
+                  <option value="高輪ゲートウェイ(仮)">高輪ゲートウェイ(仮)</option>
+                  <option value="放課後揺れるネコ">放課後揺れるネコ</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid country.
+                </div>
+              </div>
+            </div>
 
-    Identity:
-    <p id="identity"></p>
 
-    Transfer 10 Giwa token to Giwa: AaNtG3kMH9iWG2sWWL3jQZUPjN9Q23VssQ:
-    <br>
-    <input type='button' onclick="transfer()" value="Transfer">
+            <hr class="mb-4">
+            <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="issueClaim()">Issue!</button>
+          </form>
+        </div>
+      </div>
 
-    <input type='button' onclick="createIdentity()" value="createIdentity">
+      <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2017-2018 Company Name</p>
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="#">Privacy</a></li>
+          <li class="list-inline-item"><a href="#">Terms</a></li>
+          <li class="list-inline-item"><a href="#">Support</a></li>
+        </ul>
+      </footer>
+    </div>
 
-    <input type='button' onclick="issueClaim()" value="IssueClaim">
+    <!-- <div class="container">                                                                                  -->
+
+
+    <!--     <form name="inputData">                                                                              -->
+    <!--         <div class="admin-item clearfix">                                                                -->
+    <!--         <label class="admin-label">Your name:</label><input type='text' name='name' value='Your name' /> -->
+    <!--         </div>                                                                                           -->
+    <!--         <div class="admin-item clearfix">                                                                -->
+    <!--         <label class="admin-label">Select your team name:</label>                                        -->
+    <!--         <select id="teamName" name="teamName">                                                           -->
+    <!--             <option value="リボ払い">リボ払い</option>                                           -->
+    <!--             <option value="volvox">volvox</option>                                                       -->
+    <!--             <option value="報われるべきこの世界">報われるべきこの世界</option>       -->
+    <!--             <option value="DappCity">DappCity</option>                                                   -->
+    <!--             <option value="Blockchain-Nagoya">Blockchain-Nagoya</option>                                 -->
+    <!--             <option value="チーム廃課金">チーム廃課金</option>                               -->
+    <!--             <option value="オリンピックチーム">オリンピックチーム</option>             -->
+    <!--             <option value="ギャンブル">ギャンブル</option>                                     -->
+    <!--             <option value="Cerverified">Cerverified</option>                                             -->
+    <!--             <option value="美食倶楽部">美食倶楽部</option>                                     -->
+    <!--             <option value="mesi">mesi</option>                                                           -->
+    <!--             <option value="高輪ゲートウェイ(仮)">高輪ゲートウェイ(仮)</option>         -->
+    <!--             <option value="放課後揺れるネコ">放課後揺れるネコ</option>                   -->
+    <!--         </select>                                                                                        -->
+    <!--         </div>                                                                                           -->
+    <!--         <div class="admin-item clearfix">                                                                -->
+    <!--         <div><input type='button' class="button" onclick="issueClaim()" value="IssueClaim" /></div>      -->
+    <!--         </div>                                                                                           -->
+    <!--     </form>                                                                                              -->
+    <!-- </div>                                                                                                   -->
+    <!-- Account:                                                                -->
+    <!-- <p id="account"></p>                                                    -->
+
+    <!-- ONG:                                                                    -->
+    <!-- <p id="ong"></p>                                                        -->
+
+    <!-- ONT:                                                                    -->
+    <!-- <p id="ont"></p>                                                        -->
+
+    <!-- Giwa Token:                                                             -->
+    <!-- <p id="gwt"></p>                                                        -->
+
+    <!-- Marianne:                                                               -->
+    <!-- <p id="mrt"></p>                                                        -->
+
+    <!-- Identity:                                                               -->
+    <!-- <p id="identity"></p>                                                   -->
+
+    <!-- Transfer 10 Giwa token to Giwa: AaNtG3kMH9iWG2sWWL3jQZUPjN9Q23VssQ:     -->
+    <!-- <br>                                                                    -->
+    <!-- <input type='button' onclick="transfer()" value="Transfer">             -->
+
+    <!-- <input type='button' onclick="createIdentity()" value="createIdentity"> -->
+
+    <!-- <input type='button' onclick="issueClaim()" value="IssueClaim">         -->
 
 </body>
 
