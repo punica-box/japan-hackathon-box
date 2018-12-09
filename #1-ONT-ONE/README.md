@@ -1,5 +1,4 @@
-# japan-hackathon-box
+# ONT-ONE
+A one stop shop for smart contract configuration and deployment.
 
-
-## Welcome to join this hachathon
-
+Available an [O3](https://o3.network/) connected dapp.
