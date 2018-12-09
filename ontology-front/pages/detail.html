@@ -1,50 +1,63 @@
 <html>
-<html>
-  <head>
+<head>
     <meta charset="UTF-8">
     <title></title>
     <link rel="stylesheet" href="../style.css">
-  </head>
-  <header>
-    <div class="tab">tab1</div>
-    <div class="tab">tab2</div>
-  </header>
-  <body>
+    <script src="../dapi.js"></script>
+    <script src="../sdk.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
+    <script>
+        let content;
+        const ddoUrl = 'https://polarisexplorer.ont.io/api/v1/explorer/ontid/did:ont:AYmpvkUHi5GzkXbeMscrkkzGco9nyNGNjX/20/1';
+        // const ddoUrl = 'https://polarisexplorer.ont.io/api/v1/explorer/ontid/did:ont:AQC3dw2aoZxoUkGpkWY9QfvcPFWRq6qmxR/20/1';
+        (async () => {
+            try {
+                const response = await fetch(ddoUrl);
+                const json = await response.json();
+                if (json.Error !== 0) {
+                    throw new Error('json.Error is ' + json.Error + ', expected 0. ' + JSON.stringify(json));
+                }
+                const ddo = json.Result.Ddo;
+                // console.log(ddo);
+                if (ddo.Attributes.length === 0) {
+                    throw new Error('No attribute in DDO: ' + JSON.stringify(ddo));
+                }
+                const targetAttr = _.find(ddo.Attributes, 'SelfDefined.cerverified');
+                if (typeof targetAttr === 'undefined') {
+                    throw new Error('No cerverified attribute in DDO: ' + JSON.stringify(ddo.Attributes));
+                }
+                const cerverified = JSON.parse(targetAttr.SelfDefined.cerverified);
+                content = cerverified.Value.content;
+                // console.log(content);
+                document.getElementById('Name').innerHTML = content.Name;
+                document.getElementById('TeamName').innerHTML = 'Team ' + content.TeamName;
+                document.getElementById('ProgramName').innerHTML = content.Program.Name;
+                document.getElementById('ProgramDate').innerHTML = content.Program.Date;
+                document.getElementById('ProgramIssuer').innerHTML = content.Program.Issuer;
+            } catch (error) {
+                console.error(error);
+            }
+        })();
+    </script>
+</head>
+<header>
+</header>
+<body>
     <div class="container">
-      <p class="prize title">受賞記録</p>
-      <div class="prize-badge">
-        <img class="prize-badge-img" src="../img/certificate_img.png" alt="">
-        <p class="user-name inside-img">Yusuke Enomoto</p>
-        <p class="description-of-hackathon inside-img">description of hackathon</p>
-        <p class="description-of-skill inside-img">description of user's skill</p>
-        <p class="date inside-img">2018/12/09</p>
-        <p class="signature inside-img">Mosa Siru</p>
-      </div>
+    <p class="prize title">Certification detail</p>
+    <div class="prize-badge">
+    <img class="prize-badge-img" src="../img/certificate_img.png" alt="">
+    <p id="Name" class="user-name inside-img">Yusuke Enomoto</p>
+    <p id="TeamName" class="description-of-hackathon inside-img">description of hackathon</p>
+    <p id="ProgramName" class="description-of-skill inside-img">description of user's skill</p>
+    <p id="ProgramDate" class="date inside-img">2018/12/09</p>
+    <p id="ProgramIssuer" class="signature inside-img">Mosa Siru</p>
     </div>
-  </body>
-</html>
-  <head>
-    <meta charset="UTF-8">
-    <title></title>
-    <link rel="stylesheet" href="../style.css">
-  </head>
-  <header>
-    <div class="tab">tab1</div>
-    <div class="tab">tab2</div>
-  </header>
-  <body>
-    <div class="container">
-      <p class="prize title">受賞記録</p>
-      <div class="prize-badge">
-        <img class="prize-badge-img" src="../img/certificate_img.png" alt="">
-        <p class="user-name inside-img">Yusuke Enomoto</p>
-        <p class="description-of-hackathon inside-img">description of hackathon</p>
-        <p class="description-of-skill inside-img">description of user's skill</p>
-        <p class="date inside-img">2018/12/09</p>
-        <p class="signature inside-img">Mosa Siru</p>
-      </div>
-
-      <input type='button' onclick="transfer()" value="Transfer">
+    <p class="prize title">Information</p>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
+    <div>aaa</div>
     </div>
-  </body>
+</body>
 </html>

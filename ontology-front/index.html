@@ -2,6 +2,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="./style.css">
     <title></title>
 </head>
 
@@ -102,29 +103,14 @@
 
         claim.context = 'https://example.com/template/v1';
         claim.content = {
-            event: {
-              name: "Ontology Blockchain Hackathon Tokyo #1",
-              url: "https://ontology.connpass.com/event/106684/",
-              image_url: "https://connpass-tokyo.s3.amazonaws.com/thumbs/2a/22/2a22848978459a1258d39959dea85ef8.png"
-            },
-            entry: {
-              name: "mosa",
-              image_url: "https://pbs.twimg.com/profile_images/378800000214753541/b3fdd930163a330b670a45b483606574_400x400.jpeg"
-            },
-            team: {
-              name: "team_satoshi",
-              members: [], // did array
-            },
-            submitted: {
-              url: "https://github.com/mosasiru/japan-hackathon-box",
-              title: "Cerverified",
-              description: "attest you attend the event",
-              image_url: ""
-            },
-            awrd: {
-              title: "Best award",
-              description: "best!!!",
-              image_url: "",
+            Name: inputData.name.value,
+            TeamName: inputData.teamName.value,
+            Program: {
+                Name: "Ontology Hackathon Tokyo #1",
+                Url: 'https://ontology.connpass.com/event/106684/',
+                ImageUrl: "https://connpass-tokyo.s3.amazonaws.com/thumbs/2a/22/2a22848978459a1258d39959dea85ef8.png",
+                Date: '2018-12-09',
+                Issuer: 'Ontology',
             }
         };
         return claim;
@@ -196,7 +182,34 @@
 
 
 <body>
-
+    <div class="container">
+        <form name="inputData">
+            <div class="admin-item clearfix">
+            <label class="admin-label">Your name:</label><input type='text' name='name' value='Your name' />
+            </div>
+            <div class="admin-item clearfix">
+            <label class="admin-label">Select your team name:</label>
+            <select id="teamName" name="teamName">
+                <option value="リボ払い">リボ払い</option>
+                <option value="volvox">volvox</option>
+                <option value="報われるべきこの世界">報われるべきこの世界</option>
+                <option value="DappCity">DappCity</option>
+                <option value="Blockchain-Nagoya">Blockchain-Nagoya</option>
+                <option value="チーム廃課金">チーム廃課金</option>
+                <option value="オリンピックチーム">オリンピックチーム</option>
+                <option value="ギャンブル">ギャンブル</option>
+                <option value="Cerverified">Cerverified</option>
+                <option value="美食倶楽部">美食倶楽部</option>
+                <option value="mesi">mesi</option>
+                <option value="高輪ゲートウェイ(仮)">高輪ゲートウェイ(仮)</option>
+                <option value="放課後揺れるネコ">放課後揺れるネコ</option>
+            </select>
+            </div>
+            <div class="admin-item clearfix">
+            <div><input type='button' class="button" onclick="issueClaim()" value="IssueClaim" /></div>
+            </div>
+        </form>
+    </div>
     Account:
     <p id="account"></p>
 
