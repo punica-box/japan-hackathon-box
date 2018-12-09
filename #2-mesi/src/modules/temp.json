@@ -1,0 +1,96 @@
+{
+  "contractHash": "eab22ba25e11aef1f0c849c039c183dc59196dcc",
+  "abi": {
+    "functions": [
+      {
+        "name": "Main",
+        "parameters": [{ "name": "operation", "type": "" }, { "name": "args", "type": "" }],
+        "returntype": ""
+      },
+      {
+        "name": "RegisterPerson",
+        "parameters": [
+          { "name": "personAddr", "type": "" },
+          { "name": "name", "type": "" },
+          { "name": "company", "type": "" }
+        ],
+        "returntype": ""
+      },
+      {
+        "name": "RegisterCompany",
+        "parameters": [{ "name": "companyAddr", "type": "" }, { "name": "name", "type": "" }],
+        "returntype": ""
+      },
+      {
+        "name": "RegisterCompanyPerson",
+        "parameters": [{ "name": "companyAddr", "type": "" }, { "name": "personAddr", "type": "" }],
+        "returntype": ""
+      },
+      {
+        "name": "RegisterAuction",
+        "parameters": [
+          { "name": "personAddr", "type": "" },
+          { "name": "currentCompanyAddr", "type": "" },
+          { "name": "start", "type": "" },
+          { "name": "end", "type": "" }
+        ],
+        "returntype": ""
+      },
+      {
+        "name": "RegisterBid",
+        "parameters": [
+          { "name": "personAddr", "type": "" },
+          { "name": "companyAddr", "type": "" },
+          { "name": "price", "type": "" }
+        ],
+        "returntype": ""
+      },
+      { "name": "CloseAuction", "parameters": [{ "name": "personAddr", "type": "" }], "returntype": "" },
+      { "name": "getHighestBid", "parameters": [{ "name": "personAddr", "type": "" }], "returntype": "" },
+      {
+        "name": "makeState",
+        "parameters": [
+          { "name": "fromacct", "type": "" },
+          { "name": "toacct", "type": "" },
+          { "name": "amount", "type": "" }
+        ],
+        "returntype": ""
+      },
+      { "name": "concatAll", "parameters": [{ "name": "values", "type": "" }], "returntype": "" },
+      {
+        "name": "makeValue",
+        "parameters": [{ "name": "values", "type": "" }, { "name": "divider", "type": "" }],
+        "returntype": ""
+      },
+      { "name": "Symbol", "parameters": [{ "name": "", "type": "" }], "returntype": "" },
+      { "name": "Name", "parameters": [{ "name": "", "type": "" }], "returntype": "" },
+      { "name": "Decimal", "parameters": [{ "name": "", "type": "" }], "returntype": "" },
+      { "name": "TotalSupply", "parameters": [{ "name": "", "type": "" }], "returntype": "" },
+      { "name": "init", "parameters": [{ "name": "", "type": "" }], "returntype": "" },
+      {
+        "name": "transfer",
+        "parameters": [
+          { "name": "from_acct", "type": "" },
+          { "name": "to_acct", "type": "" },
+          { "name": "amount", "type": "" }
+        ],
+        "returntype": ""
+      },
+      {
+        "name": "Approve",
+        "parameters": [
+          { "name": "owner", "type": "" },
+          { "name": "spender", "type": "" },
+          { "name": "amount", "type": "" }
+        ],
+        "returntype": ""
+      },
+      { "name": "balanceOf", "parameters": [{ "name": "account", "type": "" }], "returntype": "" },
+      {
+        "name": "Allowance",
+        "parameters": [{ "name": "owner", "type": "" }, { "name": "spender", "type": "" }],
+        "returntype": ""
+      }
+    ]
+  }
+}
