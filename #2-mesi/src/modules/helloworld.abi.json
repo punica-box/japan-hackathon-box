@@ -1,0 +1,95 @@
+{
+  "hash": "0x65f4ecada173e8f312d98f384205358dfdba67ad",
+  "entrypoint": "Main",
+  "functions": [
+    {
+      "name": "Main",
+      "parameters": [{ "name": "operation", "type": "" }, { "name": "args", "type": "" }],
+      "returntype": ""
+    },
+    {
+      "name": "RegisterPerson",
+      "parameters": [
+        { "name": "personAddr", "type": "String" },
+        { "name": "name", "type": "String" },
+        { "name": "company", "type": "String" }
+      ],
+      "returntype": ""
+    },
+    {
+      "name": "RegisterCompany",
+      "parameters": [{ "name": "companyAddr", "type": "String" }, { "name": "name", "type": "String" }],
+      "returntype": ""
+    },
+    {
+      "name": "RegisterCompanyPerson",
+      "parameters": [{ "name": "companyAddr", "type": "String" }, { "name": "personAddr", "type": "String" }],
+      "returntype": ""
+    },
+    {
+      "name": "RegisterAuction",
+      "parameters": [
+        { "name": "personAddr", "type": "String" },
+        { "name": "currentCompanyAddr", "type": "String" },
+        { "name": "start", "type": "String" },
+        { "name": "end", "type": "String" }
+      ],
+      "returntype": ""
+    },
+    {
+      "name": "RegisterBid",
+      "parameters": [
+        { "name": "personAddr", "type": "String" },
+        { "name": "companyAddr", "type": "String" },
+        { "name": "price", "type": "String" }
+      ],
+      "returntype": ""
+    },
+    { "name": "CloseAuction", "parameters": [{ "name": "personAddr", "type": "String" }], "returntype": "" },
+    { "name": "getHighestBid", "parameters": [{ "name": "personAddr", "type": "String" }], "returntype": "" },
+    {
+      "name": "makeState",
+      "parameters": [
+        { "name": "fromacct", "type": "String" },
+        { "name": "toacct", "type": "String" },
+        { "name": "amount", "type": "String" }
+      ],
+      "returntype": ""
+    },
+    { "name": "concatAll", "parameters": [{ "name": "values", "type": "String" }], "returntype": "" },
+    {
+      "name": "makeValue",
+      "parameters": [{ "name": "values", "type": "String" }, { "name": "divider", "type": "String" }],
+      "returntype": ""
+    },
+    { "name": "Symbol", "parameters": [{ "name": "", "type": "String" }], "returntype": "" },
+    { "name": "Name", "parameters": [{ "name": "", "type": "String" }], "returntype": "" },
+    { "name": "Decimal", "parameters": [{ "name": "", "type": "String" }], "returntype": "" },
+    { "name": "TotalSupply", "parameters": [{ "name": "", "type": "String" }], "returntype": "" },
+    { "name": "init", "parameters": [{ "name": "", "type": "String" }], "returntype": "" },
+    {
+      "name": "transfer",
+      "parameters": [
+        { "name": "from_acct", "type": "String" },
+        { "name": "to_acct", "type": "String" },
+        { "name": "amount", "type": "String" }
+      ],
+      "returntype": ""
+    },
+    {
+      "name": "Approve",
+      "parameters": [
+        { "name": "owner", "type": "String" },
+        { "name": "spender", "type": "String" },
+        { "name": "amount", "type": "String" }
+      ],
+      "returntype": ""
+    },
+    { "name": "balanceOf", "parameters": [{ "name": "account", "type": "String" }], "returntype": "" },
+    {
+      "name": "Allowance",
+      "parameters": [{ "name": "owner", "type": "String" }, { "name": "spender", "type": "String" }],
+      "returntype": ""
+    }
+  ]
+}
