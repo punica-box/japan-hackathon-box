@@ -4,6 +4,7 @@ from boa.interop.System.Runtime import CheckWitness
 from boa.interop.System.Storage import GetContext, Get, Put
 from boa.builtins import ToScriptHash, sha256, concat, range
 from boa.interop.Ontology.Runtime import Base58ToAddress
+from boa.interop.Ontology.Native import Invoke
 
 deployer = ToScriptHash('AYPgNWcEPPZna6TJMQWVCSx9deFwrx6ArT')
 # b'jdfkdjfk''
@@ -11,6 +12,12 @@ DEALER_KEY = 'dealer:'
 DEALER_ROOMS_KEY = "dealer_rooms_all:"
 ROOMS_KEY = "rooms_map:"
 ALL_ROOMS_KEY = "all_rooms"
+DEALER_DEPOSITE_MAP = "dealer_deposite_key:"
+
+DECIMAL_FACTOR = 1000000000
+
+selfContractAddress = GetExecutingScriptHash()
+OngContractAddress = ToScriptHash("AFmseVrdL9f9oyCzZefL9tG6UbvhfRZMHJ")
 
 def Main(operation, args):
     if operation == 'RegisterAsDealer':
@@ -42,6 +49,11 @@ def Main(operation, args):
     if operation == "GetRoomByID":
         room_id = args[0]
         return GetRoomByID(room_id)
+    # if operation == "depositOngToContract":
+    #     addr = args[0]
+    #     room_id = args[1]
+    #     ong_amount = args[2]
+    #     return depositOngToContract(addr, room_id, ong_amount)
         
 def Initialize():
     ctx = GetContext()
@@ -88,8 +100,8 @@ def valuesToFormatStr(values):
     return ret
     
 def RegisterAsDealer(addr):
-    # if not CheckWitness(Base58ToAddress(addr)):
-    #     return False
+    if not CheckWitness(Base58ToAddress(addr)):
+        return False
     
     ctx = GetContext()
     dealer_map_key = concat(DEALER_KEY, addr)
@@ -114,22 +126,26 @@ def IsRegistered(addr):
     return len(dealer_registeration_status) != 0
     
 # 引数は全部string
-def CreateRoom(addr, dealer_rate, minbet, gamble_rate):
+def CreateRoom(addr, dealer_rate, minbet, gamble_rate, deposit_ong):
     # checking if the sent address is actually sender
-    if CheckWitness(Base58ToAddress(addr)) == False:
-        Notify("not sender")
-        return True
+    # # NOTE: we can't use Base58ToAddress in solochain 
+    # if CheckWitness(Base58ToAddress(addr)) == False:
+    #     Notify("not sender")
+    #     return True
         
     if IsRegistered(addr) == False:
         Notify("not registered")
         return True
 
+    depositOngToContract(addr, deposit_ong)
     ctx = GetContext()
     
     all_rooms_raw = Get(ctx, ALL_ROOMS_KEY)
     all_rooms = Deserialize(all_rooms_raw)
     new_room_id = len(all_rooms) + 1
     all_rooms.append(new_room_id)
+    
+    depositOngToContract(addr, new_room_id, deposit_ong)
     
     dealer_room_key = concat(DEALER_ROOMS_KEY, addr)
     dealer_rooms_raw = Get(ctx, dealer_room_key)
@@ -140,6 +156,7 @@ def CreateRoom(addr, dealer_rate, minbet, gamble_rate):
         "dealer_rate": dealer_rate,
         "minbet": minbet,
         "gamble_rate": gamble_rate,
+        "deposit_ong": deposit_ong,
     }
     
     Put(ctx, new_room_id, Serialize(room_setting))
@@ -166,6 +183,8 @@ def GetRoomByID(room_id):
         room_setting["minbet"],
         "gamble_rate",
         room_setting["gamble_rate"],
+        "deposit_ong",
+        room_setting["deposit_ong"],
     ]
     
     return valuesToFormatStr(values) 
@@ -185,3 +204,30 @@ def GetAllRooms():
         ret = concat(ret, all_rooms[i])
     
     return ret
+    
+# NOTE fromAccount is Address (base58)
+def depositOngToContract(fromAccount, room_id, ong_amount):
+    # checking if the sent address is actually sender
+    # NOTE: we can't use Base58ToAddress in solochain 
+    # if CheckWitness(Base58ToAddress(fromAccount)) == False:
+    #     Notify("not sender")
+    #     return True
+    if IsRegistered(fromAccount) == False:
+        Notify(["depositOngToContract", "not registered"])
+        return True
+    
+        
+    param = state(Base58ToAddress(fromAccount), selfContractAddress, DECIMAL_FACTOR * ong_amount)
+    res = Invoke(0, OngContractAddress, 'transfer', [param])
+    
+    if res and res == b'\x01':
+        Notify(["depositOngToContract", selfContractAddress, ong_amount])
+        dealer_deposite_key = concat(DEALER_DEPOSITE_MAP, fromAccount)
+        dealer_deposite_key = concat(dealer_deposite_key, ":")
+        dealer_deposite_key = concat(dealer_deposite_key, ong_amount)
+        ctx = GetContext()
+        Put(ctx, dealer_deposite_key, ong_amount)
+        return True
+    else:
+        Notify('transfer Ong failed')
+        return False
