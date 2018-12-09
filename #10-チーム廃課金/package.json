@@ -1,0 +1,35 @@
+{
+  "scripts": {
+    "start": "webpack-dev-server --mode=development --open",
+    "build": "webpack --mode=production",
+    "deploy": "yarn build && firebase deploy"
+  },
+  "dependencies": {
+    "firebase": "^5.7.0",
+    "moment": "^2.22.2",
+    "ontology-dapi": "^0.4.6",
+    "ontology-ts-sdk": "^1.0.9",
+    "react": "16.7.0-alpha.2",
+    "react-dom": "16.7.0-alpha.2",
+    "styled-components": "^4.1.2"
+  },
+  "devDependencies": {
+    "@types/html-webpack-plugin": "^3.2.0",
+    "@types/node": "^10.12.12",
+    "@types/react": "^16.7.13",
+    "@types/react-dom": "^16.0.11",
+    "@types/styled-components": "^4.1.2",
+    "@types/webpack": "^4.4.20",
+    "firebase-tools": "^6.1.2",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "prettier": "^1.15.3",
+    "ts-loader": "^5.3.1",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.2",
+    "url-loader": "^1.1.2",
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
+  }
+}
