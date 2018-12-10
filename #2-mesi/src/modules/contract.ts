@@ -223,10 +223,14 @@ export async function listenCloseAuction(
 }
 
 async function getHighestBid(address: string) {
-  const url = "highest_bid" + address;
+  const url = "highest_bid_" + address;
   const result = await rest.getStorage(codeHash, Buffer.from(url, "ascii").toString("hex")).catch(console.log);
+  console.log("highest", { result });
   if (!result || !result.Result) return;
-  const num = parseInt(Buffer.from(result.Result, "hex").toString("ascii"), 10);
+  const arr = Buffer.from(result.Result, "hex")
+    .toString("ascii")
+    .split("$");
+  const num = parseInt(arr[1], 10);
   return num;
 }
 
