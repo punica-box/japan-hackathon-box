@@ -19,6 +19,7 @@ export default class ViewScout extends React.Component<IviewScoutProps, {}> {
         onClick={() => {
           this.props.onViewScout(human);
         }}
+        style={{ maxWidth: "50vh" }}
       >
         <div style={{ padding: 10 }}>
           <Blockies seed={human.name} scale={3} />

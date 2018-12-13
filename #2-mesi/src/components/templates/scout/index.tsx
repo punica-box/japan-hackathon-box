@@ -19,8 +19,8 @@ export default class ScoutTemp extends React.Component<IScoutTempProps, {}> {
       <div>
         <HeaderOrg {...this.props} />
         <div style={{ display: "flex" }}>
-          <SearchHumanOrg {...this.props} />
-          <div style={{ display: "flex", flexDirection: "column", height: "90vh" }}>
+          <SearchHumanOrg {...this.props} style={{ flex: 1 }} />
+          <div style={{ display: "flex", flexDirection: "column", height: "90vh", flex: 1 }}>
             <DetailWorkerMol {...this.props} />
             {detailHuman ? (
               <Button style={{ marginTop: "auto" }} onClick={this.props.openAuction}>
