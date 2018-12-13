@@ -1,0 +1,321 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- <link rel="stylesheet" href="./style.css"> -->
+    <title>Issue Claim</title>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+
+
+<script src="./dapi.js"></script>
+<script src="./sdk.js"></script>
+<script>
+
+    var client
+
+    //DAPI Test
+    async function dapi() {
+
+        client = dApi.client;
+        client.registerClient({});
+
+        //Get Address
+        //const account = await client.api.asset.getAccount();
+        //document.getElementById("account").innerHTML = account;
+
+        //Get balance
+        //const balance = await client.api.network.getBalance({ address: account });
+        //document.getElementById("ong").innerHTML = balance.ONG;
+        //document.getElementById("ont").innerHTML = balance.ONT;
+        //document.getElementById("gwt").innerHTML = balance.GWT;
+        //document.getElementById("mrt").innerHTML = balance.MRT;
+
+        const identity = await client.api.identity.getIdentity();
+        document.getElementById("identity").value = identity;
+
+    }
+
+    async function transfer() {
+        const to = 'AXCyYV4DNmmsqZn9qJEqHqpacVxcr7X7ns';
+        const asset = 'GWT';
+        const amount = 10;
+        const result = await client.api.asset.send({ to, asset, amount });
+        console.log(result)
+    }
+
+    //SDK test
+    async function createIdentity() {
+        var wallet = await Ont.Wallet.create('test');
+        //Private key 生成
+        const privateKey = Ont.Crypto.PrivateKey.random();
+        console.log(privateKey)
+
+        //Identity作成
+        const password = "issuer"
+        const label = "issuer"
+        var identity = Ont.Identity.create(privateKey, password, label)
+
+        console.log(identity)
+
+        const did = identity.ontid;
+        const pk = privateKey.getPublicKey();
+        const gasPrice = '500';
+        const gasLimit = '20000';
+        const tx = Ont.OntidContract.buildRegisterOntidTx(did, pk, gasPrice, gasLimit);
+        tx.payer = new Ont.Crypto.Address("AemAjf8JSPkTdnXMmqeu6LRw5Ja3rvZV7y");
+
+        Ont.TransactionBuilder.signTransaction(tx, privateKey);
+
+        const pri = Ont.Crypto.PrivateKey.deserializeWIF('L5NBY1AaWje2duAXLfb1gK8Srrsu45bpKFCB84jdNnaynPHRmFKH');
+
+        const account = Ont.Account.create(pri, '123456', '');
+        console.log('address: ' + account.address.toBase58());
+
+        //Then sign the transaction with payer's account
+        //we already got transaction created before,add the signature.
+        Ont.TransactionBuilder.addSign(tx, pri)
+
+        const rest = new Ont.RestClient();
+
+        console.log(tx)
+
+        rest.sendRawTransaction(tx.serialize(), false).then(res => {
+            console.log(res);
+        })
+    }
+
+    function buildClaim() {
+        const signature = null;
+        const useProof = false;
+
+        const claim = new Ont.Claim({
+            // messageId: Ont.Crypto.PrivateKey.random().key,
+            messageId: "cerverified",
+            issuer: 'did:ont:AUvSmqnWDG5mseaecdcMfk3w98rwrKamzK',
+            subject: 'did:ont:AFzmBSzuAsx9fVvKU9TmQdYWmwDTMjHyL4',
+            issueAt: 1525800823
+        }, signature, useProof);
+
+        claim.version = '0.7.0';
+        //This can be ignored for now
+
+        claim.context = 'https://example.com/template/v1';
+        claim.content = {
+            Name: escape(inputData.name.value),
+            TeamName: escape(inputData.teamName.value),
+            Program: {
+                Name: "Ontology Hackathon Tokyo #1",
+                Url: 'https://ontology.connpass.com/event/106684/',
+                ImageUrl: "https://connpass-tokyo.s3.amazonaws.com/thumbs/2a/22/2a22848978459a1258d39959dea85ef8.png",
+                Date: '2018-12-09',
+                Issuer: 'Ontology',
+            }
+        };
+        return claim;
+
+    }
+
+    async function issueClaim() {
+        if (inputData.name.value === "" ||  inputData.teamName.value === "") {
+            return false;
+        }
+        const claim = buildClaim();
+
+        const url2 = 'http://polaris1.ont.io:20334';
+
+        const publicKeyId = "did:ont:AUvSmqnWDG5mseaecdcMfk3w98rwrKamzK" + "#keys-1"
+        const issuerPriv = new Ont.Crypto.PrivateKey('2d56133d1047d7700fb908a93253a58da479774a6321f0d11040c9096dc24f33');
+
+        await claim.sign(url2, publicKeyId, issuerPriv)
+        console.log(claim)
+        signed = claim.serialize();
+
+        const url = 'ws://polaris1.ont.io:20335';
+
+        const gasPrice = '500';
+        const gasLimit = '200000';
+        const payer = new Ont.Crypto.Address('AemAjf8JSPkTdnXMmqeu6LRw5Ja3rvZV7y');
+        const privateKey = Ont.Crypto.PrivateKey.deserializeWIF('L5NBY1AaWje2duAXLfb1gK8Srrsu45bpKFCB84jdNnaynPHRmFKH')
+        const result = await claim.attest(url, gasPrice, gasLimit, payer, privateKey);
+        console.log(result)
+
+        const result2 = await claim.getStatus(url2);
+        //console.log(result2)
+
+        const msg = Ont.Claim.deserialize(signed);
+        console.log(signed)
+        var verified =  await msg.verify(url2, false)
+   
+        console.log(verified)
+
+
+        // addAttribute
+        // [TODO] sign via dAPI. now fixed sunject,
+        const walletPrivateKey = new Ont.Crypto.PrivateKey("b575449ca2902a11e2f4f1ba819d26015844eff774775d67b93c507e92d0b8f1");
+        const walletIdentityPrivateKey = new Ont.Crypto.PrivateKey("61d553c5a07a26f1ebb8ff4035fb28757673b2e40a77c933af6816e1f5f5d0a5");
+
+
+        const attr = new Ont.DDOAttribute();
+        attr.key = claim.metadata.messageId;
+        attr.type = 'JSON';
+        attr.value = JSON.stringify({
+//            Type : 'JSON',
+//            Value: claim
+            Type : 'STRING',
+            Value: signed
+        });
+
+        const identity = "did:ont:AYmpvkUHi5GzkXbeMscrkkzGco9nyNGNjX";
+        const account = "ANCF6qRbF5WvGKRRcZdKrcKah4FWiP34br";
+        const address = new Ont.Crypto.Address(account);
+
+        const tx = Ont.OntidContract.buildAddAttributeTx(identity, [attr], walletIdentityPrivateKey.getPublicKey(), gasPrice, gasLimit);
+        tx.payer = address;
+        Ont.TransactionBuilder.signTransaction(tx, walletPrivateKey);
+        Ont.TransactionBuilder.addSign(tx, walletIdentityPrivateKey);
+        const socketClient = new Ont.WebsocketClient(url);
+        const res = await socketClient.sendRawTransaction(tx.serialize(), false, true);
+        console.log(res);
+        if (res.Desc === "SUCCESS") {
+            $('#successAlert').show()
+        }
+
+    }
+
+    dapi();
+
+
+
+</script>
+
+</head>
+
+<body>
+    <div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert" style="display: none;">
+      <strong>Success!!</strong>  <a href="/pages/detail.html" class="alert-link" style="text-decoration: underline">check and varify your claim!</a>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="container">
+      <div class="py-3 text-center">
+        <img class="d-block mx-auto mb-4" src="https://pbs.twimg.com/profile_banners/922358568602365953/1519103895/1500x500" alt="" width="400">
+        <h2>Attest Claim</h2>
+        <p class="lead">Please input the event and your team information!</p>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 order-md-1">
+          <h4 class="mb-3">Claim Data</h4>
+          <form class="needs-validation" name="inputData">
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="name">Ont ID</label>
+                <input type="text" class="form-control" id="identity" placeholder="" value="" required disabled>
+                <div class="invalid-feedback">
+                    Ont ID is required
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="teamName">Event URL</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="eventURL" value="https://ontology.connpass.com/event/106684/" required disabled>
+                <div class="invalid-feedback" style="width: 100%;">
+                    Event URL is Required
+                </div>
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="name">Your Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Jun Li" value="" required>
+                <div class="invalid-feedback">
+                  Valid name is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-5 mb-3">
+                <label for="teamName">Team</label>
+                <select class="custom-select d-block w-100" id="teamName" required>
+                  <option value="">Choose...</option>
+                  <option value="リボ払い">リボ払い</option>
+                  <option value="volvox">volvox</option>
+                  <option value="報われるべきこの世界">報われるべきこの世界</option>
+                  <option value="DappCity">DappCity</option>
+                  <option value="Blockchain-Nagoya">Blockchain-Nagoya</option>
+                  <option value="チーム廃課金">チーム廃課金</option>
+                  <option value="オリンピックチーム">オリンピックチーム</option>
+                  <option value="ギャンブル">ギャンブル</option>
+                  <option value="Cerverified">Cerverified</option>
+                  <option value="美食倶楽部">美食倶楽部</option>
+                  <option value="mesi">mesi</option>
+                  <option value="高輪ゲートウェイ(仮)">高輪ゲートウェイ(仮)</option>
+                  <option value="放課後揺れるネコ">放課後揺れるネコ</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid country.
+                </div>
+              </div>
+            </div>
+
+
+            <hr class="mb-4">
+            <button class="btn btn-primary btn-lg btn-block" type="submit"
+             onclick="issueClaim(); return false;">Issue!</button>
+          </form>
+        </div>
+      </div>
+
+      <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2017-2018 Company Name</p>
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="#">Privacy</a></li>
+          <li class="list-inline-item"><a href="#">Terms</a></li>
+          <li class="list-inline-item"><a href="#">Support</a></li>
+        </ul>
+      </footer>
+    </div>
+    <!-- Account:                                                                -->
+    <!-- <p id="account"></p>                                                    -->
+
+    <!-- ONG:                                                                    -->
+    <!-- <p id="ong"></p>                                                        -->
+
+    <!-- ONT:                                                                    -->
+    <!-- <p id="ont"></p>                                                        -->
+
+    <!-- Giwa Token:                                                             -->
+    <!-- <p id="gwt"></p>                                                        -->
+
+    <!-- Marianne:                                                               -->
+    <!-- <p id="mrt"></p>                                                        -->
+
+    <!-- Identity:                                                               -->
+    <!-- <p id="identity"></p>                                                   -->
+
+    <!-- Transfer 10 Giwa token to Giwa: AaNtG3kMH9iWG2sWWL3jQZUPjN9Q23VssQ:     -->
+    <!-- <br>                                                                    -->
+    <!-- <input type='button' onclick="transfer()" value="Transfer">             -->
+
+    <!-- <input type='button' onclick="createIdentity()" value="createIdentity"> -->
+
+    <!-- <input type='button' onclick="issueClaim()" value="IssueClaim">         -->
+
+</body>
+
+</html>
